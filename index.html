@@ -1,0 +1,2145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>BiciMAD — Product Vision · Group 7</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Geist+Mono:wght@400;500&family=Caveat:wght@500;600;700&display=swap" rel="stylesheet" />
+<script src="deck-stage.js"></script>
+<script type="application/json" id="speaker-notes">
+["","","","","","","","","","","","","",""]
+</script>
+<style>
+  :root {
+    /* Type scale (1920×1080) */
+    --type-mega: 200px;
+    --type-display: 156px;
+    --type-title: 96px;
+    --type-subtitle: 52px;
+    --type-body: 30px;
+    --type-small: 26px;
+    --type-meta: 24px;
+    --type-stat: 168px;
+
+    /* Spacing */
+    --pad-x: 112px;
+    --pad-top: 96px;
+    --pad-bottom: 96px;
+    --gap-title: 56px;
+    --gap-item: 28px;
+
+    /* Palette v4 — Sapphire Sky / Twilight Indigo / White Smoke / Terracotta / Strawberry */
+    --bg: #F6F4F3;            /* White Smoke */
+    --bg-soft: #ECE6E2;       /* derived cream — card surface */
+    --bg-soft-2: #DDD6D0;
+    --ink: #183059;           /* Twilight Indigo */
+    --ink-2: #244A85;
+    --muted: #5C6680;
+    --muted-2: #8B95B0;
+    --line: #DAD3CC;
+    --line-2: #C3BBB2;
+    --red: #276FBF;           /* Sapphire Sky — primary accent (token name kept for legacy) */
+    --red-deep: #1A55A0;
+    --red-soft: #DDE9F4;
+    --accent: var(--red);
+    --true-red: #F03A47;      /* Strawberry Red — emphasis */
+    --terra: #AF5B5B;         /* Terracotta Clay */
+    --beige: #ECE6E2;
+    --blue-bright: #276FBF;
+    --sky: #FFFFFF;
+    --dark: #183059;
+    --dark-2: #244A85;
+
+    /* Fonts */
+    --sans: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --script: "Caveat", "Geist Mono", cursive;
+  }
+
+  html, body { margin: 0; padding: 0; background: #000; }
+  body { font-family: var(--sans); color: var(--ink); }
+
+  deck-stage section {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    overflow: hidden;
+    position: relative;
+    font-feature-settings: "ss01", "cv11";
+  }
+
+  /* ===== Reusable atoms ===== */
+
+  .frame {
+    position: absolute;
+    inset: var(--pad-top) var(--pad-x) var(--pad-bottom) var(--pad-x);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .eyebrow {
+    font-family: var(--script);
+    font-size: 44px;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--red);
+    display: inline-block;
+    line-height: 1;
+  }
+  .eyebrow.muted { color: var(--muted); }
+
+  h1.display {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: var(--type-display);
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    margin: 0;
+    color: var(--ink);
+  }
+  h1.display .accent { color: var(--red); }
+
+  h2.title {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: var(--type-title);
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+    margin: 0;
+    color: var(--ink);
+  }
+  h2.title .accent { color: var(--red); }
+  h2.title .muted { color: var(--muted); }
+
+  .subtitle {
+    font-family: var(--sans);
+    font-size: var(--type-subtitle);
+    line-height: 1.15;
+    font-weight: 400;
+    color: var(--ink-2);
+    margin: 0;
+    letter-spacing: -0.015em;
+  }
+
+  .body {
+    font-size: var(--type-body);
+    line-height: 1.4;
+    color: var(--muted);
+    font-weight: 400;
+    margin: 0;
+    letter-spacing: -0.005em;
+  }
+  .body strong { color: var(--ink); font-weight: 500; }
+
+  .small { font-size: var(--type-small); line-height: 1.4; color: var(--muted); }
+
+  .meta {
+    font-family: var(--mono);
+    font-size: var(--type-meta);
+    letter-spacing: 0;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  /* ===== Page chrome (footer) ===== */
+  .footer {
+    position: absolute;
+    right: var(--pad-x);
+    bottom: 42px;
+    font-family: var(--mono);
+    font-size: var(--type-meta);
+    color: var(--muted-2);
+    white-space: nowrap;
+  }
+  .footer .num { color: var(--ink); font-weight: 500; }
+
+  .dark .footer { color: #6B7280; }
+  .dark .footer .num { color: #FAFAFA; }
+
+  /* ===== Dark slide variant ===== */
+  .dark { background: var(--dark) !important; color: #FAFAFA; }
+
+  /* On dark navy slides, accent = WHITE (per user direction) */
+  .dark .accent, .dark h1 .accent, .dark h2 .accent, .dark h2.title .accent,
+  .vision .accent, .vision .vc.to .vh .accent,
+  .rebrand .accent, .rebrand .name .accent,
+  .closing .accent {
+    color: #FFFFFF;
+  }
+  .dark h2.title, .vision h2.title, .rebrand h1, .closing h1 { color: #FFFFFF; }
+  .dark .body, .dark .subtitle { color: rgba(255, 255, 255, 0.82); }
+  /* Script eyebrows + labels readable on dark navy */
+  .dark .eyebrow, .vision .eyebrow, .closing .rebrand-eyebrow, .rebrand .rebrand-eyebrow {
+    color: #FFFFFF;
+  }
+  .vision .vc.from .vlabel, .vision .vc.to .vlabel { color: rgba(255, 255, 255, 0.55); }
+  .vision .vc.to .vlabel { color: #FFFFFF; }
+  /* Card labels inside dark slides */
+  .vision .why .wn, .dark .wn { color: #FFFFFF; }
+  .vision .why .wt, .dark .wt { color: #FFFFFF; }
+  .vision .why .wd, .dark .wd { color: rgba(255, 255, 255, 0.78); }
+  .closing-phases .ph { color: #FFFFFF; }
+
+
+
+  .dark h1.display, .dark h2.title { color: #FAFAFA; }
+  .dark .body { color: #B5B5BA; }
+  .dark .body strong { color: #FAFAFA; }
+  .dark .subtitle { color: #E8E8EA; }
+  .dark .small { color: #9CA0A8; }
+  .dark .meta, .dark .footer { color: #6B7280; }
+  .dark .footer .num { color: #FAFAFA; }
+
+  /* ===== Section-header (eyebrow + title + lead) reusable ===== */
+  .section-head {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .section-head .lhs { display: flex; flex-direction: column; gap: 18px; max-width: 1500px; }
+  .section-head .rhs { max-width: 1500px; padding-bottom: 0; flex: none; }
+
+  /* ============================================ */
+  /* SLIDE 1 — COVER                              */
+  /* ============================================ */
+  .cover { background: var(--bg) !important; color: var(--ink); overflow: hidden; }
+  .cover .frame {
+    padding: 0;
+    inset: 64px 96px 56px 96px;
+    justify-content: space-between;
+    align-items: stretch;
+  }
+
+  /* Soft warm vignette in upper-right — Madrid morning light */
+  .cover-glow {
+    position: absolute;
+    right: -260px;
+    top: -260px;
+    width: 900px;
+    height: 900px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(39, 111, 191, 0.10) 0%, rgba(39, 111, 191, 0.04) 40%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Top masthead */
+  .cover-top {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .cover-mark {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .cover-mark .mark-logo {
+    height: 56px;
+    width: auto;
+    display: block;
+  }
+  .cover-top .meta {
+    font-family: var(--mono);
+    font-size: 24px;
+    color: var(--muted);
+    text-align: right;
+    line-height: 1.5;
+  }
+  .cover-top .meta .meta-strong { color: var(--ink); font-weight: 500; display: block; }
+
+  /* Centered hero block */
+  .cover-hero {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 32px;
+    justify-content: center;
+    flex: 1;
+    padding: 20px 0;
+    min-height: 0;
+  }
+  .cover-script-line {
+    font-family: var(--script);
+    font-size: 52px;
+    font-weight: 600;
+    color: var(--red);
+    line-height: 1;
+    transform: rotate(-1deg);
+    white-space: nowrap;
+    display: inline-block;
+  }
+  .cover-headline {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 120px;
+    line-height: 1.0;
+    letter-spacing: -0.04em;
+    margin: 0;
+    color: var(--ink);
+    max-width: 1500px;
+  }
+  .cover-headline .accent {
+    color: var(--red);
+  }
+  .cover-sub {
+    font-family: var(--sans);
+    font-size: 28px;
+    font-weight: 400;
+    color: var(--muted);
+    line-height: 1.4;
+    max-width: 920px;
+    letter-spacing: -0.005em;
+    margin: 0;
+  }
+  .cover-sub strong { color: var(--ink); font-weight: 500; }
+
+  /* Skyline + footer block */
+  .cover-bottom-wrap {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .cover-skyline {
+    width: 100%;
+    display: block;
+    height: 64px;
+  }
+  .cover-foot {
+    border-top: 1px solid var(--line);
+    padding-top: 18px;
+    display: block;
+  }
+  .cover-foot .col.single .v {
+    font-family: var(--sans);
+    font-size: 24px;
+    color: var(--ink);
+    font-weight: 400;
+    line-height: 1.4;
+    letter-spacing: -0.005em;
+  }
+  .cover-foot .col.single .v {
+    /* fallback */
+  }
+  .cover-foot .col .k {
+    font-family: var(--mono);
+    font-size: 24px;
+    color: var(--muted);
+    letter-spacing: 0.02em;
+  }
+  .cover-foot .col .v {
+    font-family: var(--sans);
+    font-size: 24px;
+    color: var(--ink);
+    font-weight: 500;
+    line-height: 1.35;
+    letter-spacing: -0.01em;
+  }
+  .cover-foot .col .v-mono {
+    font-family: var(--mono);
+    font-size: 24px;
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .cover-foot .col .members-list {
+    font-family: var(--sans);
+    font-size: 24px;
+    color: var(--ink-2);
+    line-height: 1.35;
+    font-weight: 400;
+    letter-spacing: -0.005em;
+  }
+
+  /* ============================================ */
+  /* SLIDE 2 — MADRID IS COMPETING                */
+  /* ============================================ */
+  .competing .frame { gap: 70px; }
+  .city-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    flex: 1;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .city-cell {
+    padding: 40px 36px 36px 0;
+    border-right: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    position: relative;
+  }
+  .city-cell:not(:first-child) { padding-left: 36px; }
+  .city-cell:last-child { border-right: none; padding-right: 0; }
+
+  .city-cell.madrid { background: var(--dark); color: #FAFAFA; padding-left: 36px; padding-right: 36px; }
+  .city-cell.madrid + .city-cell { border-left: none; }
+  .city-cell.madrid .ctag { color: var(--red); }
+  .city-cell.madrid .cprod { color: #FAFAFA; }
+  .city-cell.madrid .csince { color: rgba(250,250,250,0.55); }
+  .city-cell.madrid .cname { color: #FAFAFA; }
+
+  .city-cell .ctag {
+    font-family: var(--mono);
+    font-size: var(--type-meta);
+    color: var(--muted);
+  }
+  .city-cell .city-icon {
+    width: 56px; height: 56px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 8px;
+    color: var(--red);
+  }
+  .city-cell.madrid .city-icon { color: var(--gold, #E7C26A); }
+  .city-cell .cname {
+    font-family: var(--sans);
+    font-size: 88px;
+    font-weight: 600;
+    line-height: 0.95;
+    letter-spacing: -0.035em;
+    color: var(--ink);
+  }
+  .city-cell .cprod {
+    font-family: var(--sans);
+    font-size: 38px;
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+  }
+  .city-cell .csince {
+    margin-top: auto;
+    font-family: var(--mono);
+    font-size: var(--type-meta);
+    color: var(--muted);
+  }
+
+  /* ============================================ */
+  /* SLIDE 3 — BICIMAD TODAY                      */
+  /* ============================================ */
+  .today .frame { gap: 56px; }
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .stat-cell {
+    padding: 48px 40px 40px 0;
+    border-right: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .stat-cell:not(:first-child) { padding-left: 40px; }
+  .stat-cell:last-child { border-right: none; padding-right: 0; }
+  .stat-num {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 152px;
+    line-height: 0.9;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 18px;
+  }
+  .stat-num .unit {
+    font-size: 32px;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    align-self: center;
+  }
+  .stat-label {
+    font-family: var(--script);
+    font-size: 40px;
+    font-weight: 600;
+    color: var(--red);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .today-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    flex: 1;
+  }
+  .today-block h3 {
+    font-family: var(--mono);
+    font-size: var(--type-meta);
+    color: var(--muted);
+    font-weight: 500;
+    margin: 0 0 24px;
+  }
+  .today-block .lead {
+    font-family: var(--sans);
+    font-size: 34px;
+    line-height: 1.3;
+    color: var(--ink);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .adv-list { list-style: none; padding: 0; margin: 0; }
+  .adv-list li {
+    font-size: 28px;
+    line-height: 1.35;
+    padding: 14px 0;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink);
+    display: flex;
+    gap: 22px;
+    align-items: baseline;
+    letter-spacing: -0.005em;
+  }
+  .adv-list li:last-child { border-bottom: none; }
+  .adv-list li .ix {
+    color: var(--red);
+    font-family: var(--mono);
+    font-size: 24px;
+    flex: 0 0 36px;
+  }
+
+  /* ============================================ */
+  /* SLIDE 4 — WHO WE SERVE                       */
+  /* ============================================ */
+  .persona .frame { gap: 44px; }
+  .persona-grid {
+    display: grid;
+    grid-template-columns: 1.45fr 1fr;
+    gap: 36px;
+    flex: 1;
+    min-height: 0;
+    align-items: start;
+  }
+  .pcard {
+    background: var(--bg-soft);
+    padding: 32px 36px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    border-radius: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .pcard.primary { background: var(--ink); color: #FAFAFA; }
+  .pcard.secondary { background: var(--bg-soft); }
+
+  .ptag {
+    font-family: var(--script);
+    font-size: 36px;
+    font-weight: 600;
+    color: var(--red);
+    letter-spacing: 0;
+    line-height: 1;
+  }
+  .pcard.secondary .ptag { color: var(--muted); }
+
+  .pcard .phead {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+  .pavatar {
+    width: 110px; height: 140px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #2A2E38, #14171F);
+    color: rgba(250, 250, 250, 0.4);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--sans);
+    font-size: 36px;
+    font-weight: 600;
+    flex-shrink: 0;
+    letter-spacing: -0.02em;
+    position: relative;
+    overflow: hidden;
+  }
+  .pavatar::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(45deg, transparent, transparent 12px, rgba(250,250,250,0.04) 12px, rgba(250,250,250,0.04) 13px);
+  }
+  .pavatar svg {
+    width: 44px; height: 44px;
+    position: relative;
+    z-index: 1;
+  }
+  .pcard.secondary .pavatar {
+    background: linear-gradient(135deg, #F4F4F5, #E5E7EB);
+    color: var(--muted);
+  }
+
+  .pname {
+    font-family: var(--sans);
+    font-size: 42px;
+    font-weight: 600;
+    line-height: 1.0;
+    letter-spacing: -0.025em;
+    margin: 0;
+  }
+  .pcard.primary .pname { color: #FAFAFA; }
+  .psub {
+    font-family: var(--mono);
+    font-size: var(--type-meta);
+    color: rgba(250, 250, 250, 0.6);
+    margin-top: 8px;
+  }
+  .pcard.secondary .psub { color: var(--muted); }
+
+  .prow {
+    display: flex;
+    gap: 18px;
+    font-size: 24px;
+    line-height: 1.3;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(250, 250, 250, 0.12);
+    letter-spacing: -0.005em;
+  }
+  .pcard.secondary .prow { border-bottom-color: var(--line); }
+  .prow:last-of-type { border-bottom: none; }
+  .prow .k {
+    flex: 0 0 130px;
+    font-family: var(--mono);
+    font-size: 24px;
+    color: rgba(250, 250, 250, 0.5);
+    padding-top: 4px;
+  }
+  .pcard.secondary .prow .k { color: var(--muted); }
+  .prow .v { flex: 1; color: rgba(250, 250, 250, 0.9); }
+  .prow .v strong { color: #FAFAFA; font-weight: 500; }
+  .pcard.secondary .prow .v { color: var(--ink); }
+  .pcard.secondary .prow .v strong { color: var(--ink); font-weight: 500; }
+
+  .pquote {
+    margin-top: 4px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(250, 250, 250, 0.18);
+    font-family: var(--sans);
+    font-size: 24px;
+    line-height: 1.3;
+    color: rgba(250, 250, 250, 0.85);
+    font-weight: 400;
+    letter-spacing: -0.005em;
+  }
+  .pcard.secondary .pquote { color: var(--ink); border-top-color: var(--line); }
+
+  /* ============================================ */
+  /* SLIDE 5 — TWO PROBLEMS                       */
+  /* ============================================ */
+  .problems .frame { gap: 60px; }
+  .prob-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    flex: 1;
+    border-top: 1px solid var(--line);
+  }
+  .prob {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    padding: 40px 60px 0 0;
+    border-right: 1px solid var(--line);
+  }
+  .prob:last-child { border-right: none; padding-right: 0; padding-left: 60px; }
+  .prob-tag {
+    font-family: var(--script);
+    font-size: 44px;
+    font-weight: 600;
+    color: var(--red);
+    display: inline-block;
+    line-height: 1;
+  }
+  .prob h3 {
+    font-family: var(--sans);
+    font-size: 72px;
+    font-weight: 600;
+    line-height: 1.0;
+    margin: 0;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+  }
+  .prob-list { list-style: none; padding: 0; margin: 0; }
+  .prob-list li {
+    font-size: 28px;
+    line-height: 1.4;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--line);
+    color: var(--ink-2);
+    display: flex;
+    align-items: baseline;
+    gap: 18px;
+    letter-spacing: -0.005em;
+  }
+  .prob-list li:last-child { border-bottom: none; }
+  .prob-list li .x {
+    color: var(--red);
+    font-family: var(--mono);
+    font-size: 24px;
+    flex: 0 0 32px;
+    font-weight: 500;
+  }
+
+  /* ============================================ */
+  /* SLIDE 6 — PRODUCT VISION                     */
+  /* ============================================ */
+  .vision .frame { gap: 64px; }
+  .vision-shift {
+    display: grid;
+    grid-template-columns: 0.85fr 160px 1.15fr;
+    align-items: stretch;
+    border-top: 1px solid rgba(250, 250, 250, 0.18);
+    border-bottom: 1px solid rgba(250, 250, 250, 0.18);
+  }
+  .vc {
+    padding: 44px 40px 44px 0;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .vc.to { padding-left: 40px; padding-right: 0; }
+  .vc .vlabel {
+    font-family: var(--mono);
+    font-size: var(--type-meta);
+    color: rgba(250, 250, 250, 0.4);
+  }
+  .vc.to .vlabel { color: var(--red); }
+  .vc .vh {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 60px;
+    line-height: 1.0;
+    letter-spacing: -0.03em;
+  }
+  .vc.from .vh { color: rgba(250, 250, 250, 0.65); text-decoration: line-through; text-decoration-thickness: 3px; text-decoration-color: #F03A47; }
+  .vc.to .vh { color: #FAFAFA; }
+  .vc.to .vh .accent { color: var(--red); }
+  .vc .vsub {
+    font-size: 26px;
+    line-height: 1.4;
+    color: rgba(250, 250, 250, 0.65);
+    letter-spacing: -0.005em;
+  }
+  .vc.to .vsub { color: rgba(250, 250, 250, 0.85); }
+  .varrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--red);
+    padding: 16px 0;
+  }
+  .varrow svg { width: 100%; height: auto; }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 36px;
+    margin-top: 16px;
+  }
+  .why {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 24px 26px;
+    background: rgba(250, 250, 250, 0.06);
+    border: 1px solid rgba(250, 250, 250, 0.16);
+    border-radius: 18px;
+    transition: background 0.2s ease;
+  }
+  .why .wn {
+    font-family: var(--mono);
+    font-size: var(--type-meta);
+    color: var(--red);
+  }
+  .why .wt {
+    font-family: var(--sans);
+    font-size: 38px;
+    font-weight: 500;
+    color: #FAFAFA;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+  }
+  .why .wd {
+    font-size: 24px;
+    line-height: 1.45;
+    color: rgba(250, 250, 250, 0.7);
+    letter-spacing: -0.005em;
+  }
+
+  /* ============================================ */
+  /* SLIDE 7 — ROADMAP OVERVIEW                   */
+  /* ============================================ */
+  .roadmap .frame { gap: 56px; }
+  .rm-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    flex: 1;
+  }
+  .rm {
+    background: var(--bg-soft);
+    border-radius: 24px;
+    padding: 44px 40px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    position: relative;
+    color: var(--ink);
+  }
+  .rm.middle { background: var(--bg-soft); color: var(--ink); }
+  .rm-phase {
+    font-family: var(--script);
+    font-size: 44px;
+    font-weight: 600;
+    color: var(--red);
+    display: inline-block;
+    line-height: 1;
+  }
+  .rm-when {
+    font-family: var(--mono);
+    font-size: var(--type-meta);
+    color: var(--muted);
+  }
+  .rm.middle .rm-when { color: var(--muted); }
+  .rm h3 {
+    font-family: var(--sans);
+    font-size: 54px;
+    font-weight: 600;
+    line-height: 1.0;
+    margin: 0;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+  }
+  .rm.middle h3 { color: var(--ink); }
+  .rm .rm-lead {
+    font-size: 24px;
+    line-height: 1.4;
+    color: var(--muted);
+    letter-spacing: -0.005em;
+  }
+  .rm.middle .rm-lead { color: var(--muted); }
+  .rm .rm-pill {
+    margin-top: auto;
+    padding-top: 22px;
+    border-top: 1px solid var(--bg-soft-2);
+    font-family: var(--mono);
+    font-size: var(--type-meta);
+    color: var(--muted);
+  }
+  .rm.middle .rm-pill { border-top-color: var(--bg-soft-2); color: var(--muted); }
+
+  /* ============================================ */
+  /* PHASE 1 — FIX THE FRONT DOOR                 */
+  /* ============================================ */
+  .phase .frame { gap: 44px; }
+  .phase-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 60px;
+    padding-bottom: 36px;
+    border-bottom: 1px solid var(--line);
+  }
+  .phase-head .lhs { display: flex; flex-direction: column; gap: 20px; max-width: 1180px; }
+  .phase-head .rhs {
+    text-align: right;
+    font-family: var(--mono);
+    font-size: var(--type-meta);
+    color: var(--muted);
+    line-height: 1.6;
+  }
+  .phase-num {
+    font-family: var(--script);
+    font-size: 44px;
+    font-weight: 600;
+    color: var(--red);
+    display: inline-block;
+    line-height: 1;
+  }
+
+  .feat-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 1fr;
+    gap: 0;
+    flex: 1;
+  }
+  .feat {
+    padding: 32px 40px 32px 0;
+    border-right: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .feat:nth-child(3n) { border-right: none; padding-right: 0; }
+  .feat:nth-child(n+4) { padding-top: 32px; }
+  .feat:nth-child(n+4):nth-last-child(-n+3), .feat:nth-last-child(-n+3) { border-bottom: none; }
+  .feat:not(:nth-child(3n+1)) { padding-left: 40px; }
+  .feat .fix {
+    font-family: var(--mono);
+    font-size: var(--type-meta);
+    color: var(--red);
+  }
+  .feat h4 {
+    font-family: var(--sans);
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 1.05;
+    margin: 0;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .feat p {
+    font-size: 24px;
+    line-height: 1.4;
+    color: var(--muted);
+    margin: 0;
+    letter-spacing: -0.005em;
+  }
+
+  /* ============================================ */
+  /* SLIDE 9 — REBRAND REVEAL                     */
+  /* ============================================ */
+  .rebrand .frame { justify-content: center; align-items: center; text-align: center; gap: 32px; }
+  .rebrand-eyebrow {
+    font-family: var(--script);
+    font-size: 44px;
+    font-weight: 600;
+    color: var(--red);
+    display: inline-block;
+    line-height: 1;
+  }
+  .rebrand h1 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 180px;
+    line-height: 1.0;
+    letter-spacing: -0.045em;
+    margin: 16px 0 16px;
+    color: #FAFAFA;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+  .rebrand .strike {
+    color: rgba(250, 250, 250, 0.35);
+    position: relative;
+    display: inline-block;
+  }
+  .rebrand .strike::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0;
+    top: 52%;
+    height: 6px;
+    background: #F03A47;
+    transform: rotate(-2deg);
+  }
+  .rebrand .becomes {
+    font-size: 56px;
+    font-weight: 400;
+    color: rgba(250, 250, 250, 0.55);
+    letter-spacing: -0.02em;
+    line-height: 1.0;
+  }
+  .rebrand .name { color: #FAFAFA; }
+  .rebrand .name .accent { color: var(--red); }
+  .rebrand .tagline {
+    font-family: var(--sans);
+    font-size: 52px;
+    color: #FAFAFA;
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    margin-top: 12px;
+  }
+  .rebrand .modes {
+    margin-top: 36px;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    font-family: var(--mono);
+    font-size: var(--type-meta);
+    color: rgba(250, 250, 250, 0.85);
+  }
+  .rebrand .modes .sep { color: var(--red); }
+
+  /* ============================================ */
+  /* SLIDE 10 — ONE PASS                          */
+  /* ============================================ */
+  .onepass .frame { gap: 44px; padding-bottom: 110px; }
+  .onepass-body {
+    display: grid;
+    grid-template-columns: 480px 1fr;
+    gap: 100px;
+    flex: 1;
+    min-height: 0;
+    align-items: center;
+  }
+  .pass-card {
+    width: 480px;
+    height: 300px;
+    background: linear-gradient(135deg, #16161A 0%, #0A0A0B 60%, #1F0F12 100%);
+    color: #FAFAFA;
+    padding: 30px 34px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 28px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 24px 60px rgba(10, 10, 11, 0.25);
+  }
+  .pass-card::before {
+    content: "";
+    position: absolute;
+    right: -120px; top: -120px;
+    width: 380px; height: 380px;
+    background: radial-gradient(circle, rgba(39, 111, 191, 0.35), transparent 70%);
+  }
+  .pc-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    z-index: 1;
+  }
+  .pc-logo {
+    font-family: var(--sans);
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+  }
+  .pc-logo .accent { color: var(--red); }
+  .pc-chip {
+    width: 44px; height: 34px;
+    background: linear-gradient(135deg, #E7C26A, #8C6B29);
+    border-radius: 6px;
+    position: relative;
+  }
+  .pc-chip::after {
+    content: "";
+    position: absolute; inset: 8px;
+    border: 1px solid rgba(0,0,0,0.25);
+    border-radius: 4px;
+  }
+  .pc-modes {
+    margin-top: auto;
+    display: flex;
+    gap: 18px;
+    font-family: var(--mono);
+    font-size: 20px;
+    color: rgba(250, 250, 250, 0.6);
+    position: relative; z-index: 1;
+  }
+  .pc-modes b { color: #FAFAFA; font-weight: 500; }
+  .pc-name {
+    font-family: var(--sans);
+    font-size: 32px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    position: relative; z-index: 1;
+    margin-top: 14px;
+  }
+  .pc-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    font-family: var(--mono);
+    font-size: 18px;
+    color: rgba(250, 250, 250, 0.55);
+    position: relative; z-index: 1;
+    margin-top: 10px;
+    gap: 16px;
+  }
+  .pc-foot span { white-space: nowrap; }
+  .pc-foot .gold { color: #E7C26A; }
+
+  .pass-features { list-style: none; padding: 0; margin: 0; }
+  .pass-features li {
+    padding: 22px 0;
+    border-bottom: 1px solid var(--line);
+    display: flex;
+    align-items: baseline;
+    gap: 24px;
+  }
+  .pass-features li:first-child { padding-top: 0; }
+  .pass-features li:last-child { border-bottom: none; }
+  .pass-features .ix {
+    font-family: var(--mono);
+    font-size: 24px;
+    color: var(--red);
+    flex: 0 0 36px;
+  }
+  .pass-features .h {
+    font-family: var(--sans);
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 1.1;
+    color: var(--ink);
+    letter-spacing: -0.015em;
+  }
+  .pass-features .d {
+    font-size: 24px;
+    color: var(--muted);
+    margin-top: 4px;
+    letter-spacing: -0.005em;
+  }
+
+  /* ============================================ */
+  /* SLIDE 11 — TOURIST PLATFORM                  */
+  /* ============================================ */
+  .touchpoint .frame { gap: 40px; }
+  .touch-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    flex: 1;
+  }
+  .ts {
+    background: #183059;
+    padding: 32px 28px 28px;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+    color: #FFFFFF;
+  }
+  .ts.dark { background: #183059 !important; color: #FFFFFF; }
+  .ts.dark .ts-step {
+    font-family: var(--script);
+    font-size: 40px;
+    font-weight: 600;
+    color: var(--red);
+    display: inline-block;
+    line-height: 1;
+  }
+  .ts.dark .ts-name {
+    font-family: var(--sans);
+    font-size: 60px;
+    font-weight: 600;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    margin-top: 6px;
+  }
+  .ts-body {
+    font-size: 24px;
+    line-height: 1.4;
+    color: var(--muted);
+    letter-spacing: -0.005em;
+    margin-top: 4px;
+  }
+
+  .touch-foot {
+    padding-top: 28px;
+    border-top: 1px solid var(--line);
+    font-family: var(--sans);
+    font-size: 34px;
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: -0.015em;
+  }
+  .touch-foot .accent { color: var(--red); font-weight: 500; }
+
+  /* ============================================ */
+  /* SLIDE 12 — PARTNERS                          */
+  /* ============================================ */
+  .partners .frame { gap: 40px; }
+  .partner-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr 1fr;
+    gap: 20px;
+    flex: 1;
+    min-height: 0;
+  }
+  .pt {
+    padding: 28px 24px 24px;
+    background: var(--bg-soft);
+    border-radius: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    position: relative;
+  }
+  .pt-icon {
+    width: 44px;
+    height: 44px;
+    color: var(--red);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .pt-icon svg { width: 100%; height: 100%; }
+  .pt h4 {
+    font-family: var(--sans);
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 1.05;
+    margin: 0;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .pt-d {
+    font-size: 24px;
+    line-height: 1.4;
+    color: var(--muted);
+    margin: 0;
+    letter-spacing: -0.005em;
+  }
+  .partners-foot {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    font-family: var(--sans);
+    font-size: 30px;
+    font-weight: 400;
+    color: var(--ink);
+    letter-spacing: -0.015em;
+    line-height: 1.3;
+  }
+  .partners-foot .accent { color: var(--red); font-weight: 500; }
+
+
+  /* ============================================ */
+  /* Cover bike graphic */
+  .cover-bike {
+    width: 360px;
+    height: auto;
+    color: var(--red);
+    align-self: center;
+  }
+  .cover-bike.big {
+    width: 440px;
+    align-self: center;
+    margin-bottom: 8px;
+  }
+
+  /* Strategic advantage cards (slide 4) */
+  .adv-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 8px;
+  }
+  .adv-card {
+    padding: 28px 24px;
+    background: var(--bg-soft);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .adv-num {
+    font-family: var(--mono);
+    font-size: 24px;
+    color: var(--red);
+    font-weight: 500;
+  }
+  .adv-h {
+    font-family: var(--sans);
+    font-size: 32px;
+    font-weight: 600;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+  }
+  .adv-d {
+    font-size: 24px;
+    line-height: 1.4;
+    color: var(--muted);
+    letter-spacing: -0.005em;
+  }
+
+  /* Two problems — card styling */
+  .prob {
+    background: var(--bg-soft);
+    border-radius: 24px;
+    padding: 44px 48px;
+    gap: 24px;
+  }
+  .prob h3 {
+    font-family: var(--sans);
+    font-size: 56px;
+    font-weight: 600;
+    line-height: 1.0;
+    margin: 0;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+  }
+  .prob-list li {
+    border-bottom-color: rgba(0,0,0,0.06);
+  }
+  .problems .prob-grid {
+    gap: 32px;
+  }
+
+  /* Pass card graphic */
+  .pc-graphic {
+    width: calc(100% + 24px);
+    height: 36px;
+    margin: 4px -12px -2px -12px;
+    position: relative;
+    z-index: 1;
+    opacity: 0.85;
+  }
+
+  /* Closing graphic */
+  .closing-graphic {
+    width: 100%;
+    max-height: 280px;
+    margin-top: 60px;
+  }
+
+  /* SLIDE 13 — TWO ASKS                          */
+  /* ============================================ */
+  .ask .frame { gap: 48px; padding-bottom: 110px; }
+  .ask-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    flex: 1;
+    min-height: 0;
+  }
+  .ac {
+    background: var(--bg-soft);
+    color: var(--ink);
+    padding: 44px 48px 44px;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .ac-icon-wrap {
+    width: 64px;
+    height: 64px;
+    color: var(--red);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ac.primary .ac-icon-wrap { color: var(--red); }
+  .ac-icon { width: 100%; height: 100%; }
+  .ac.primary { background: var(--bg-soft); color: var(--ink); }
+  .ac-tag {
+    font-family: var(--script);
+    font-size: 44px;
+    font-weight: 600;
+    color: var(--red);
+    display: inline-block;
+    line-height: 1;
+  }
+  .ac h3 {
+    font-family: var(--sans);
+    font-size: 44px;
+    font-weight: 600;
+    line-height: 1.0;
+    margin: 0;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+  }
+  .ac.primary h3 { color: var(--ink); }
+  .ac .ac-lead {
+    font-size: 24px;
+    line-height: 1.4;
+    color: var(--muted);
+    letter-spacing: -0.005em;
+  }
+  .ac.primary .ac-lead { color: var(--muted); }
+  .ac .ac-foot {
+    margin-top: auto;
+    padding-top: 22px;
+    border-top: 1px solid var(--bg-soft-2);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .ac.primary .ac-foot { border-top-color: var(--bg-soft-2); }
+  .ac .ac-foot .k {
+    font-family: var(--mono);
+    font-size: 24px;
+    color: var(--muted);
+  }
+  .ac.primary .ac-foot .k { color: var(--muted); }
+  .ac .ac-foot .v {
+    font-family: var(--sans);
+    font-size: 26px;
+    line-height: 1.35;
+    color: var(--ink);
+    letter-spacing: -0.005em;
+  }
+  .ac.primary .ac-foot .v { color: var(--ink); }
+
+  /* ============================================ */
+  /* SLIDE 14 — CLOSING                           */
+  /* ============================================ */
+  .closing .frame { justify-content: center; align-items: flex-start; gap: 80px; }
+  .closing h1 {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 168px;
+    line-height: 0.93;
+    letter-spacing: -0.045em;
+    margin: 0;
+    color: #FAFAFA;
+  }
+  .closing h1 .accent { color: var(--red); }
+  .closing-phases {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    width: 100%;
+    padding-top: 36px;
+    border-top: 1px solid rgba(250, 250, 250, 0.18);
+  }
+  .closing-phases .c { display: flex; flex-direction: column; gap: 12px; }
+  .closing-phases .ph {
+    font-family: var(--script);
+    font-size: 40px;
+    font-weight: 600;
+    color: var(--red);
+    display: inline-block;
+    line-height: 1;
+  }
+  .closing-phases .t {
+    font-family: var(--sans);
+    font-size: 40px;
+    font-weight: 500;
+    line-height: 1.05;
+    color: #FAFAFA;
+    letter-spacing: -0.02em;
+  }
+</style>
+</head>
+<body>
+
+<deck-stage width="1920" height="1080">
+
+  <!-- ============ 1. COVER ============ -->
+  <section data-label="01 Cover" class="cover">
+    <div class="cover-glow"></div>
+
+    <div class="frame">
+      <!-- Top masthead -->
+      <div class="cover-top">
+        <div class="cover-mark">
+          <img class="mark-logo" src="assets/bicimad-logo.png" alt="BiciMAD" />
+        </div>
+        <div class="meta" data-comment-anchor="65765446f8-div">
+          <span class="meta-strong" data-comment-anchor="e6467f5746-span">Product Vision · Technology Product Management</span>
+        </div>
+      </div>
+
+      <!-- Centered hero -->
+      <div class="cover-hero" data-comment-anchor="8c65226d9b-div">
+        <svg class="cover-bike big" data-comment-anchor="1a54f82780-svg" viewBox="0 0 320 130" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-comment-anchor="1a54f82780-svg" style="stroke: rgb(240, 58, 71)">
+          <!-- Rear wheel -->
+          <circle cx="70" cy="92" r="32" />
+          <circle cx="70" cy="92" r="4" fill="currentColor" />
+          <!-- Front wheel -->
+          <circle cx="250" cy="92" r="32" />
+          <circle cx="250" cy="92" r="4" fill="currentColor" />
+          <!-- Spokes (subtle) -->
+          <g stroke-width="1" opacity="0.45">
+            <line x1="70" y1="60" x2="70" y2="124" />
+            <line x1="38" y1="92" x2="102" y2="92" />
+            <line x1="48" y1="70" x2="92" y2="114" />
+            <line x1="92" y1="70" x2="48" y2="114" />
+            <line x1="250" y1="60" x2="250" y2="124" />
+            <line x1="218" y1="92" x2="282" y2="92" />
+            <line x1="228" y1="70" x2="272" y2="114" />
+            <line x1="272" y1="70" x2="228" y2="114" />
+          </g>
+          <!-- Frame: triangles -->
+          <path d="M 70 92 L 140 92 L 175 38 L 200 92 Z" />
+          <path d="M 140 92 L 200 92" />
+          <!-- Seat post + saddle -->
+          <line x1="140" y1="92" x2="140" y2="48" />
+          <path d="M 120 44 L 160 44" />
+          <!-- Handlebar stem + bars -->
+          <line x1="175" y1="38" x2="225" y2="38" />
+          <path d="M 215 38 L 230 24 L 245 24" />
+          <!-- Fork to front wheel -->
+          <line x1="225" y1="38" x2="250" y2="92" />
+          <!-- Pedals/crank -->
+          <line x1="170" y1="98" x2="180" y2="86" />
+          <circle cx="170" cy="98" r="3" fill="currentColor" />
+          <circle cx="180" cy="86" r="3" fill="currentColor" />
+          <line x1="175" y1="92" x2="175" y2="92" />
+        </svg>
+        <div class="cover-script-line"></div>
+
+        <h1 class="cover-headline">From a bike app to Madrid's<br /><span class="accent">experience platform.</span></h1>
+
+        <p class="cover-sub">The story of how BiciMAD evolves from a single-mode transport app — across three phases, two asks, one city.</p>
+      </div>
+
+      <!-- Skyline + footer -->
+      <div class="cover-bottom-wrap">
+        <svg class="cover-skyline" viewBox="0 0 1728 88" preserveAspectRatio="xMidYEnd meet" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <line x1="0" y1="86" x2="1728" y2="86" stroke="#E5E7EB" stroke-width="1"/>
+          <g fill="none" stroke="#276FBF" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round">
+            <!-- Royal Palace -->
+            <path d="M 80 86 L 80 56 L 90 56 L 90 48 L 110 48 L 110 40 L 145 40 L 145 48 L 165 48 L 165 56 L 175 56 L 175 86" />
+            <!-- Almudena Cathedral twin spires + dome -->
+            <path d="M 210 86 L 210 60 L 222 60 L 222 44 L 228 36 L 234 44 L 234 60 L 252 60 L 252 50 L 258 38 L 264 50 L 264 60 L 276 60 L 276 44 L 282 36 L 288 44 L 288 60 L 300 60 L 300 86" />
+            <!-- Edificio España -->
+            <path d="M 340 86 L 340 30 L 360 30 L 360 24 L 372 24 L 372 30 L 392 30 L 392 86" />
+            <!-- Metropolis building dome -->
+            <path d="M 430 86 L 430 50 Q 450 32 470 50 L 470 86 M 450 32 L 450 22 L 446 22 L 446 18 L 454 18 L 454 22 L 450 22" />
+            <!-- Palacio de Cibeles -->
+            <path d="M 510 86 L 510 50 L 520 50 L 520 42 L 528 42 L 528 34 L 536 34 L 536 26 L 544 26 L 544 34 L 552 34 L 552 42 L 560 42 L 560 50 L 570 50 L 570 86" />
+            <!-- Apartments -->
+            <path d="M 620 86 L 620 58 L 700 58 L 700 86" />
+            <path d="M 740 86 L 740 52 L 800 52 L 800 86" />
+            <!-- Schweppes / Edificio Carrión -->
+            <path d="M 840 86 L 840 28 L 900 28 L 900 86 M 855 36 L 885 36 M 855 44 L 885 44" />
+            <!-- Apartments -->
+            <path d="M 940 86 L 940 56 L 1000 56 L 1000 86" />
+            <path d="M 1040 86 L 1040 60 L 1100 60 L 1100 86" />
+            <!-- Tiny cyclist -->
+            <circle cx="1140" cy="78" r="3" />
+            <circle cx="1156" cy="78" r="3" />
+            <path d="M 1140 78 L 1148 64 L 1156 78 M 1144 70 L 1156 70 M 1148 64 L 1152 60" />
+            <!-- Gran Vía / Sol block -->
+            <path d="M 1200 86 L 1200 54 L 1280 54 L 1280 86 M 1215 62 L 1265 62 M 1215 70 L 1265 70 M 1215 78 L 1265 78" />
+            <!-- KIO towers -->
+            <path d="M 1330 86 L 1335 30 L 1355 30 L 1360 86" />
+            <path d="M 1380 86 L 1385 30 L 1405 30 L 1410 86" />
+            <!-- Cuatro Torres -->
+            <path d="M 1460 86 L 1460 16 L 1474 16 L 1474 86" />
+            <path d="M 1500 86 L 1500 24 L 1514 24 L 1514 86" />
+            <path d="M 1540 86 L 1540 12 L 1554 12 L 1554 86" />
+            <path d="M 1580 86 L 1580 20 L 1594 20 L 1594 86" />
+            <!-- Trailing -->
+            <path d="M 1630 86 L 1630 64 L 1680 64 L 1680 86" />
+          </g>
+        </svg>
+
+        <div class="cover-foot">
+          <div class="col single" data-comment-anchor="e7673a3b63-div">
+            <div class="v">Group 7 — Philip Swart · Qasim Almansoor · Jesús Roberto Aguirre · Tommaso Trufini · Alankriti Khare · Nathalia Rivera</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 2. MADRID IS COMPETING ============ -->
+  <section data-label="02 Madrid is competing" class="competing">
+    <div class="frame">
+      <div class="section-head">
+        <div class="lhs">
+          <div class="eyebrow">The opportunity</div>
+          <h2 class="title" data-comment-anchor="5af7e914ac-h2">Madrid is <span class="accent">competing.</span></h2>
+        </div>
+        <p class="body rhs" data-comment-anchor="2e97b6e8ed-p">Every European capital is fighting for the same tourists, the same talent, the same business. The ones that win make the city itself easy to use.</p>
+      </div>
+
+      <div class="city-grid">
+        <div class="city-cell">
+          <svg class="city-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M 31 6 L 33 6 L 33 10 L 35 10 L 35 14 L 37 14 L 37 18 L 39 18 L 39 24 L 41 24 L 41 28 L 38 28 L 38 56 L 26 56 L 26 28 L 23 28 L 23 24 L 25 24 L 25 18 L 27 18 L 27 14 L 29 14 L 29 10 L 31 10 Z M 28 30 L 36 30 L 36 38 L 28 38 Z" /><path d="M 18 58 L 46 58 L 46 60 L 18 60 Z" opacity="0.6"/></svg>
+          <div class="ctag">UK · capital</div>
+          <div class="cname">London</div>
+          <div class="cprod">Oyster</div>
+          <div class="csince">Since 2003</div>
+        </div>
+        <div class="city-cell">
+          <svg class="city-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M 31 4 L 33 4 L 35 14 L 35 18 L 37 18 L 37 22 L 35 22 L 35 26 L 33 26 L 36 36 L 36 38 L 39 42 L 39 46 L 43 46 L 49 58 L 45 58 L 40 50 L 36 50 L 36 58 L 28 58 L 28 50 L 24 50 L 19 58 L 15 58 L 21 46 L 25 46 L 25 42 L 28 38 L 28 36 L 31 26 L 29 26 L 29 22 L 27 22 L 27 18 L 29 18 L 29 14 L 31 4 Z M 26 30 L 38 30 L 38 32 L 26 32 Z" /></svg>
+          <div class="ctag">FR · capital</div>
+          <div class="cname">Paris</div>
+          <div class="cprod">Navigo</div>
+          <div class="csince">Since 2001</div>
+        </div>
+        <div class="city-cell" data-comment-anchor="32e9859667-div">
+          <svg class="city-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M 16 58 L 16 30 L 19 30 L 19 26 L 23 26 L 23 22 L 27 22 L 27 18 L 31 18 L 31 14 L 33 14 L 33 18 L 37 18 L 37 22 L 41 22 L 41 26 L 45 26 L 45 30 L 48 30 L 48 58 Z" /><rect x="20" y="38" width="5" height="6" fill="#FFFFFF" /><rect x="29.5" y="38" width="5" height="6" fill="#FFFFFF" /><rect x="39" y="38" width="5" height="6" fill="#FFFFFF" /><rect x="20" y="48" width="5" height="6" fill="#FFFFFF" /><rect x="29.5" y="48" width="5" height="8" fill="#FFFFFF" /><rect x="39" y="48" width="5" height="6" fill="#FFFFFF" /></svg>
+          <div class="ctag">NL · capital</div>
+          <div class="cname">Amsterdam</div>
+          <div class="cprod">OV-chipkaart</div>
+          <div class="csince">Since 2005</div>
+        </div>
+        <div class="city-cell madrid">
+          <svg class="city-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="currentColor" data-comment-anchor="f8e0c15cdc-svg"><path d="M 8 32 L 6 28 L 4 28 L 6 24 L 9 24 L 12 22 L 11 16 L 14 16 L 16 22 L 19 21 L 18 14 L 21 14 L 23 22 L 28 24 L 36 24 L 44 25 L 50 28 L 55 32 L 58 30 L 60 32 L 58 36 L 55 38 L 53 42 L 51 50 L 47 50 L 49 42 L 46 42 L 45 50 L 41 50 L 42 42 L 23 41 L 22 50 L 18 50 L 19 41 L 14 39 L 13 50 L 9 50 L 11 38 L 9 35 Z" /><path d="M 18 58 L 50 58 L 50 60 L 18 60 Z" opacity="0.6"/></svg>
+          <div class="ctag" data-comment-anchor="925674b2f1-div" style="color: rgb(240, 58, 71)">ES · capital</div>
+          <div class="cname">Madrid</div>
+          <div class="cprod">4 apps. 3 cards.</div>
+          <div class="csince">Today.</div>
+        </div>
+      </div>
+    </div>
+    <div class="footer"><span class="num">02 / 13</span></div>
+  </section>
+
+  <!-- ============ 3. WHO WE SERVE ============ -->
+  <section data-label="03 Who we serve" class="persona">
+    <div class="frame" data-comment-anchor="2966e4c0e0-div">
+      <div class="section-head">
+        <div class="lhs">
+          <div class="eyebrow" data-comment-anchor="2b7cd67ea6-div">The customer</div>
+          <h2 class="title">Who we <span class="accent">serve.</span></h2>
+        </div>
+        <p class="body rhs">A primary user we are designed for — and a secondary user who quietly benefits from everything we build.</p>
+      </div>
+
+      <div class="persona-grid">
+        <div class="pcard primary">
+          <div class="ptag" style="color: rgb(240, 58, 71)">Primary · Tourists & international visitors</div>
+          <div class="phead" data-comment-anchor="8dac0bc0f5-div">
+            <div class="pavatar"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1.5">
+        <rect x="3" y="6" width="26" height="22" rx="2" />
+        <circle cx="16" cy="16" r="5" />
+        <path d="M 11 6 L 13 3 L 19 3 L 21 6" />
+      </svg></div>
+            <div>
+              <h3 class="pname">Felipe Swartinez</h3>
+              <div class="psub">Student · 28 · just moved to Madrid</div>
+            </div>
+          </div>
+          <div class="prow">
+            <div class="k">Bio</div>
+            <div class="v"><strong>No NIE, no Spanish number.</strong> Settling into a confusing city on a tight budget.</div>
+          </div>
+          <div class="prow">
+            <div class="k">Goals</div>
+            <div class="v">Cheap transport. Explore sustainably. <strong>Fall in love with his new home.</strong></div>
+          </div>
+          <div class="prow">
+            <div class="k">Pains</div>
+            <div class="v">Onboarding locked behind Spanish credentials. English UX is broken.</div>
+          </div>
+          <div class="prow">
+            <div class="k">Drivers</div>
+            <div class="v">Ease of access · price · sustainability · prefers English.</div>
+          </div>
+          <div class="pquote">"I just need one thing that works — on day one, in English, with my own card."</div>
+        </div>
+
+        <div class="pcard secondary">
+          <div class="ptag">Secondary · Daily commuters</div>
+          <div class="phead">
+            <div class="pavatar"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1.5">
+        <rect x="3" y="6" width="26" height="22" rx="2" />
+        <circle cx="16" cy="16" r="5" />
+        <path d="M 11 6 L 13 3 L 19 3 L 21 6" />
+      </svg></div>
+            <div>
+              <h3 class="pname">María Rodríguez</h3>
+              <div class="psub">Madrileña · daily commuter</div>
+            </div>
+          </div>
+          <div class="prow">
+            <div class="k">Gains</div>
+            <div class="v">One pass — no more lost metro cards. Seamless bike + bus + metro commute. Daily & weekly fare cap.</div>
+          </div>
+          <div class="prow">
+            <div class="k">Why now</div>
+            <div class="v">Locals legitimise the platform. A city that works for Madrileños wins tourists too.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer"><span class="num">03 / 13</span></div>
+  </section>
+
+  <!-- ============ 4. BICIMAD TODAY ============ -->
+  <section data-label="04 BiciMAD today" class="today">
+    <div class="frame" data-comment-anchor="2f402cb16b-div">
+      <div class="section-head">
+        <div class="lhs">
+          <div class="eyebrow">The product</div>
+          <h2 class="title">BiciMAD <span class="muted">today.</span></h2>
+        </div>
+        <p class="body rhs">Madrid's public e-bike platform · operated by EMT · part of the city's public transport offering.</p>
+      </div>
+
+      <div class="stat-row">
+        <div class="stat-cell">
+          <div class="stat-label" data-comment-anchor="54d5dd1635-div">Demand is real</div>
+          <div class="stat-num">259K<span class="unit" data-comment-anchor="94f90394e9-span">monthly rides</span></div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-label">Hardware is well used</div>
+          <div class="stat-num">6.23<span class="unit">uses · bike · day</span></div>
+        </div>
+        <div class="stat-cell">
+          <div class="stat-label">Last-mile, exploration mode</div>
+          <div class="stat-num">15<span class="unit">min average ride</span></div>
+        </div>
+      </div>
+    
+      <div class="adv-cards" data-comment-anchor="2f402cb16b-cards">
+        <div class="adv-card">
+          <div class="adv-num">01</div>
+          <div class="adv-h">NFC unlocking</div>
+          <div class="adv-d">Already shipped and proven on every bike</div>
+        </div>
+        <div class="adv-card">
+          <div class="adv-num">02</div>
+          <div class="adv-h">EMT integration</div>
+          <div class="adv-d">Direct path into Madrid's transport stack</div>
+        </div>
+        <div class="adv-card">
+          <div class="adv-num">04</div>
+          <div class="adv-h">Green positioning</div>
+          <div class="adv-d">Aligned with Madrid Central and the city's strategy</div>
+        </div>
+      </div>
+    </div>
+    <div class="footer"><span class="num">04 / 13</span></div>
+  </section>
+
+  <!-- ============ 5. TWO PROBLEMS ============ -->
+  <section data-label="05 Two problems" class="problems">
+    <div class="frame">
+      <div class="section-head">
+        <div class="lhs">
+          <div class="eyebrow">The current context</div>
+          <h2 class="title">Two problems holding<br />Madrid <span class="accent">back.</span></h2>
+        </div>
+        </div>
+      <div class="prob-grid">
+        <div class="prob">
+          <h3 data-comment-anchor="cdc379c8e1-h3">Painful onboarding</h3>
+          <ul class="prob-list">
+            <li><span class="x">01</span>Requires a Spanish phone number to register</li>
+            <li><span class="x">02</span>Credit card must be added via external browser</li>
+            <li><span class="x">03</span>App unavailable on Google Play outside Spain</li>
+            <li><span class="x">04</span>English translation is subpar and confusing</li>
+            <li><span class="x">05</span>Multiple unnecessary steps deter new users</li>
+          </ul>
+        </div>
+        <div class="prob">
+          <h3>Fragmented transport</h3>
+          <ul class="prob-list">
+            <li><span class="x">01</span>Metro card — separate registration and top-up</li>
+            <li><span class="x">02</span>BiciMAD — completely separate app and billing</li>
+            <li><span class="x">03</span>EMT buses — own system, own subscription</li>
+            <li><span class="x">04</span>Airport — top-up only at Aeropuerto T4 station</li>
+            <li><span class="x">05</span>No single card works across all modes</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer"><span class="num">05 / 13</span></div>
+  </section>
+
+  <!-- ============ 6. PRODUCT VISION ============ -->
+  <section data-label="06 Product vision" class="vision dark">
+    <div class="frame">
+      <div class="section-head">
+        <div class="lhs">
+          <div class="eyebrow">Our product vision</div>
+          <h2 class="title">BiciMAD must <span class="accent">evolve.</span></h2>
+        </div>
+        <p class="body rhs" style="color: rgba(250,250,250,0.7);">The opportunity isn't a better bike app. It's redefining how Madrid meets the world.</p>
+      </div>
+
+      <div class="vision-shift">
+        <div class="vc from">
+          <div class="vlabel">From</div>
+          <div class="vh" data-comment-anchor="d2cb415c47-div">A transport product</div>
+          <div class="vsub">A bike-sharing app — one of many city utilities.</div>
+        </div>
+        <div class="varrow" aria-hidden="true">→</div>
+        <div class="vc to">
+          <div class="vlabel">To</div>
+          <div class="vh">A <span class="accent">Madrid experience</span><br />platform</div>
+          <div class="vsub">The way visitors and locals discover the city.</div>
+        </div>
+      </div>
+
+      <div class="why-grid">
+        <div class="why">
+          <div class="wn" data-comment-anchor="026c1cc90b-div" style="color: rgb(240, 58, 71)">01 · Green credentials</div>
+          <div class="wt">Aligned with Madrid Central</div>
+          <div class="wd">Sustainability is the city's strategy. We already lead on emissions.</div>
+        </div>
+        <div class="why">
+          <div class="wn" style="color: rgb(240, 58, 71)">02 · Experience layer</div>
+          <div class="wt">Cycling is exploration</div>
+          <div class="wd">The bike is the slowest, best way to fall for a city — like Paris with Vélib'.</div>
+        </div>
+        <div class="why">
+          <div class="wn" style="color: rgb(240, 58, 71)">03 · Already there</div>
+          <div class="wt">The platform is half-built</div>
+          <div class="wd">NFC unlocking, app infrastructure and EMT ownership — in place today.</div>
+        </div>
+      </div>
+    </div>
+    <div class="footer"><span class="num">06 / 13</span></div>
+  </section>
+
+  <!-- ============ 7. THREE PHASES ============ -->
+  <section data-label="07 Three phases" class="roadmap">
+    <div class="frame">
+      <div class="section-head">
+        <div class="lhs">
+          <div class="eyebrow">The plan</div>
+          <h2 class="title">Three phases to<br />get <span class="accent">there.</span></h2>
+        </div>
+        </div>
+
+      <div class="rm-grid">
+        <div class="rm">
+          <div class="rm-phase">Phase 01</div>
+          <div class="rm-when" data-comment-anchor="254280cb74-div">Q3 2026 · still BiciMAD</div>
+          <h3>Fix the front door</h3>
+          <p class="rm-lead">Remove every barrier between a new user and their first ride. Onboarding and payment, rebuilt.</p>
+          <div class="rm-pill" style="color: rgb(240, 58, 71)">Foundation</div>
+        </div>
+        <div class="rm middle" data-comment-anchor="0b7762e6a1-div">
+          <div class="rm-phase">Phase 02</div>
+          <div class="rm-when" data-comment-anchor="6e9146ba70-div">Q4 2026 · launch MadUnlocked</div>
+          <h3>One city, one pass</h3>
+          <p class="rm-lead">A single digital NFC pass for bikes, buses and metro. The rebrand of Madrid mobility.</p>
+          <div class="rm-pill" style="color: rgb(240, 58, 71)">Integration & rebrand</div>
+        </div>
+        <div class="rm">
+          <div class="rm-phase">Phase 03</div>
+          <div class="rm-when" data-comment-anchor="c67dacdafa-div">Q1 2027 · the platform</div>
+          <h3>Madrid's first touchpoint</h3>
+          <p class="rm-lead">Hotels, museums and tourism partners distribute the pass. The city becomes the product.</p>
+          <div class="rm-pill" style="color: rgb(240, 58, 71)">Expansion</div>
+        </div>
+      </div>
+    </div>
+    <div class="footer"><span class="num">07 / 13</span></div>
+  </section>
+
+  <!-- ============ 8. PHASE 1 ============ -->
+  <section data-label="08 Phase 1" class="phase">
+    <div class="frame">
+      <div class="phase-head">
+        <div class="lhs">
+          <div class="phase-num">Phase 01 · Onboarding</div>
+          <h2 class="title">Fix the <span class="accent">front door.</span></h2>
+          <p class="body" style="max-width: 1200px;">Remove every barrier between a new user and their first ride. Still BiciMAD — but a BiciMAD that works for Felipe on his first day in the city.</p>
+        </div>
+        <div class="rhs"></div>
+      </div>
+
+      <div class="feat-grid">
+        <div class="feat">
+          <div class="fix">Fix 01</div>
+          <h4>Any phone number</h4>
+          <p>Register with any international number — no Spanish SIM required.</p>
+        </div>
+        <div class="feat">
+          <div class="fix">Fix 02</div>
+          <h4>Valid passport</h4>
+          <p>Passport accepted as ID — removes the NIE barrier for newcomers.</p>
+        </div>
+        <div class="feat">
+          <div class="fix">Fix 03</div>
+          <h4>In-app payment</h4>
+          <p>Add card directly in the app — no external browser redirect.</p>
+        </div>
+        <div class="feat">
+          <div class="fix">Fix 04</div>
+          <h4>Apple & Google Pay</h4>
+          <p>One-tap wallet payment — faster, safer, already in every pocket.</p>
+        </div>
+        <div class="feat">
+          <div class="fix">Fix 05</div>
+          <h4>Global app access</h4>
+          <p>Remove the locale restriction on Google Play — any country can download.</p>
+        </div>
+        <div class="feat">
+          <div class="fix">Fix 06</div>
+          <h4>English first</h4>
+          <p>Full English UX overhaul — tourists and expats feel at home.</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer"><span class="num">08 / 13</span></div>
+  </section>
+
+  <!-- ============ 9. REBRAND REVEAL ============ -->
+  <section data-label="09 BiciMAD becomes MadUnlocked" class="rebrand dark">
+    <div class="frame">
+      <div class="rebrand-eyebrow">Before Phase 02 begins, everything changes</div>
+      <h1>
+        <span class="strike">BiciMAD</span>
+        <span class="becomes">becomes</span>
+        <span class="name"><span class="accent">Mad</span>Unlocked.</span>
+      </h1>
+      <div class="tagline">One city.  One pass.  One experience.</div>
+      <div class="modes">
+        <span>Bikes</span><span class="sep">·</span>
+        <span>Buses</span><span class="sep">·</span>
+        <span>Metro</span>
+      </div>
+    </div>
+    <div class="footer"><span class="num">09 / 13</span></div>
+  </section>
+
+  <!-- ============ 10. ONE PASS ============ -->
+  <section data-label="10 Phase 2 — One pass" class="onepass">
+    <div class="frame">
+      <div class="phase-head" data-comment-anchor="8ab6d8f959-div">
+        <div class="lhs">
+          <div class="phase-num">Phase 02 · One Pass</div>
+          <h2 class="title">One Madrid, <span class="accent">one pass.</span></h2>
+          <p class="body" style="max-width: 1100px;">A single digital NFC pass for bikes, buses and metro. In Apple Wallet and Google Wallet. No new card to carry, nothing new to download.</p>
+        </div>
+        <div class="rhs"></div>
+      </div>
+
+      <div class="onepass-body">
+        <div class="pass-card" data-comment-anchor="c90ce2edf8-div">
+          <div class="pc-row">
+            <div class="pc-logo"><span class="accent">Mad</span>Unlocked</div>
+            <div class="pc-chip"></div>
+          </div>
+          <div class="pc-name">Felipe S.</div>
+          <div class="pc-modes">
+            <span><b>BICI</b></span>
+            <span><b>BUS</b></span>
+            <span><b>METRO</b></span>
+          </div>
+          <svg class="pc-graphic" viewBox="0 0 240 28" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" data-comment-anchor="707288c5b4-svg">
+            <g fill="none" stroke="rgba(250,250,250,0.55)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M 0 26 L 12 26 L 12 20 L 20 20 L 20 16 L 28 16 L 28 22 L 36 22 L 36 12 L 44 12 L 44 18 L 52 18 L 52 8 L 58 8 L 58 18 L 66 18 L 66 24 L 78 24 L 78 14 L 86 14 L 86 4 L 94 4 L 94 18 L 102 18 L 102 22 L 112 22 L 112 10 L 124 10 L 124 18 L 132 18 L 132 22 L 144 22 L 144 14 L 152 14 L 152 22 L 162 22 L 162 18 L 170 18 L 170 6 L 178 6 L 178 18 L 186 18 L 186 22 L 196 22 L 196 14 L 206 14 L 206 22 L 218 22 L 218 26 L 240 26" />
+            </g>
+          </svg>
+          <div class="pc-foot">
+            <span>NFC ·)) Tap to ride</span>
+            <span class="gold">Madrid · 2026</span>
+          </div>
+        </div>
+
+        <ul class="pass-features">
+          <li>
+            <span class="ix" data-comment-anchor="5dfcc48bc2-span">01</span>
+            <div>
+              <div class="h">A single digital pass</div>
+              <div class="d">In Apple Wallet & Google Wallet. Nothing extra to carry.</div>
+            </div>
+          </li>
+          <li>
+            <span class="ix" data-comment-anchor="701f083ae4-span">02</span>
+            <div>
+              <div class="h">Daily & weekly fare cap</div>
+              <div class="d">Never overpay — same model that made London Oyster work.</div>
+            </div>
+          </li>
+          <li>
+            <span class="ix">03</span>
+            <div>
+              <div class="h">No more lost cards</div>
+              <div class="d">Fully digital. Lives in the phone you already own.</div>
+            </div>
+          </li>
+          <li>
+            <span class="ix">04</span>
+            <div>
+              <div class="h">NFC tap to ride</div>
+              <div class="d">Already built into BiciMAD today. Reused, not rebuilt.</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer"><span class="num">10 / 13</span></div>
+  </section>
+
+  <!-- ============ 12. PARTNERS ============ -->
+  <section data-label="11 Partners as distribution" class="partners" data-comment-anchor="814ccbde6d-section">
+    <div class="frame">
+      <div class="section-head" data-comment-anchor="a6e6c4b54f-div">
+        <div class="lhs">
+          <div class="eyebrow">Phase 03 · Platform &amp; Ecosystem</div>
+          <h2 class="title" data-comment-anchor="f9a7cd3339-h2">Build the <span class="accent">Ecosystem.</span></h2>
+          <p class="body rhs" style="max-width: 1200px;">Bikes become the first touchpoint. Hotels, museums, restaurants and tech partners benefit alongside — and become reasons to come back.</p>
+        </div>
+        <div class="rhs"></div>
+      </div>
+
+      <div class="partner-grid">
+        <div class="pt" data-comment-anchor="3c5fd63664-div">
+          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19V8"/><path d="M21 19V8"/><path d="M3 8h18v11H3z" stroke="none"/><path d="M3 14h18"/><path d="M7 14V11a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3"/><path d="M3 19h18"/></svg></div>
+          <h4>Hotels</h4>
+          <p class="pt-d">Pre-load MadUnlocked at check-in. Pass is on the phone before the bag is unpacked.</p>
+        </div>
+        <div class="pt">
+          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8 L12 3 L22 8"/><path d="M3 8 V19"/><path d="M21 8 V19"/><path d="M7 11 V17"/><path d="M11 11 V17"/><path d="M15 11 V17"/><path d="M19 11 V17"/><path d="M2 19 L22 19"/><path d="M2 21 L22 21"/></svg></div>
+          <h4>Museums &amp; galleries</h4>
+          <p class="pt-d" data-comment-anchor="d3eaa0bd36-d">Discounted entry and priority access for MadUnlocked pass holders.</p>
+        </div>
+        <div class="pt">
+          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19 C 5 16, 9 16, 9 13 C 9 10, 5 10, 5 7 C 5 4, 9 4, 11 4"/><path d="M11 4 L17 4 A 3 3 0 0 1 17 10 L14 10 A 3 3 0 0 0 14 16 L 19 16"/><circle cx="19" cy="19" r="2.5" fill="currentColor"/></svg></div>
+          <h4>Biking routes</h4>
+          <p class="pt-d">Curated neighborhood tours — La Latina, Malasaña, Retiro — built into the app.</p>
+        </div>
+        <div class="pt">
+          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s-8-7.5-8-13a8 8 0 0 1 16 0c0 5.5-8 13-8 13Z"/><circle cx="12" cy="9" r="3"/></svg></div>
+          <h4>Google Maps</h4>
+          <p class="pt-d" data-comment-anchor="gmaps-card">Bike routes surface as a transit option inside Google Maps — search a destination, tap to ride.</p>
+        </div>
+        <div class="pt">
+          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2 V11 A2 2 0 0 1 5 13 H4 V22"/><path d="M11 2 V22"/><path d="M11 2 V8 A3 3 0 0 0 14 11 H15 V22"/><path d="M18 2 C20 2, 21 4, 21 7 S20 13, 18 13 V22"/></svg></div>
+          <h4>Restaurants &amp; shops</h4>
+          <p class="pt-d">Pass-holder discounts and perks across Madrid's food and retail scene.</p>
+        </div>
+        <div class="pt">
+          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12 L13 12 L9 20 L7 20 L9 12 L4 12 L2 14 L1 13 L3 9 L1 5 L2 4 L4 6 L9 6 L7 -2 L9 -2 L13 6 L21 6 A 2 2 0 0 1 21 12 Z" transform="translate(0, 4)"/></svg></div>
+          <h4>Airports</h4>
+          <p class="pt-d">Pre-arrival pass activation at Barajas — passport scan, ready to ride at landing.</p>
+        </div>
+        <div class="pt">
+          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14 L2 11 L4 11 L5 9 L4 6 L6 6 L7 9 L9 9 L9 6 L11 6 L12 9 L17 10 L21 11 L22 13 L20 14 L19 17 L19 20 L17 20 L17 17 L15 17 L15 20 L13 20 L13 17 L8 17 L8 20 L6 20 L6 17 L4 16 L4 19 L3 19 L3 14 Z"/></svg></div>
+          <h4>Madrid Tourism Board</h4>
+          <p class="pt-d">Co-branded launch. Longer stays, more spend, global brand lift for the city.</p>
+        </div>
+        <div class="pt">
+          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L13.5 8 L19 9 L13.5 10 L12 16 L10.5 10 L5 9 L10.5 8 Z"/><path d="M19 16 L20 19 L23 20 L20 21 L19 24 L18 21 L15 20 L18 19 Z" transform="translate(-1, -2)"/><path d="M5 17 L5.8 19 L8 20 L5.8 21 L5 23 L4.2 21 L2 20 L4.2 19 Z" transform="translate(0, -2)"/></svg></div>
+          <h4>Events &amp; nightlife</h4>
+          <p class="pt-d">Concert, festival and venue partner perks — Madrid after dark, one tap away.</p>
+        </div>
+      </div>
+          <div class="partners-foot" data-comment-anchor="partners-foot">This is not a transport app. <span class="accent">It is Madrid city membership.</span></div>
+    </div>
+    <div class="footer"><span class="num">11 / 13</span></div>
+  </section>
+
+  <!-- ============ 13. TWO ASKS ============ -->
+  <section data-label="12 What we need" class="ask">
+    <div class="frame" data-comment-anchor="a6df709ac2-div">
+      <div class="section-head">
+        <div class="lhs">
+          <div class="eyebrow">What we need from the board</div>
+          <h2 class="title">Two asks. <span class="accent">One vision.</span></h2>
+        </div>
+        <p class="body rhs"></p>
+      </div>
+
+      <div class="ask-grid">
+        <div class="ac primary" style="height: 500px">
+          <div class="ac-icon-wrap" data-comment-anchor="9d8d9d0195-div"><svg class="ac-icon" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="12" y="12" width="32" height="32" rx="3"/><rect x="20" y="20" width="16" height="16" rx="1"/><line x1="8" y1="18" x2="12" y2="18"/><line x1="8" y1="28" x2="12" y2="28"/><line x1="8" y1="38" x2="12" y2="38"/><line x1="44" y1="18" x2="48" y2="18"/><line x1="44" y1="28" x2="48" y2="28"/><line x1="44" y1="38" x2="48" y2="38"/><line x1="18" y1="8" x2="18" y2="12"/><line x1="28" y1="8" x2="28" y2="12"/><line x1="38" y1="8" x2="38" y2="12"/><line x1="18" y1="44" x2="18" y2="48"/><line x1="28" y1="44" x2="28" y2="48"/><line x1="38" y1="44" x2="38" y2="48"/></svg></div>
+          <h3>Technology budget,<br />across all three phases.</h3>
+          <p class="ac-lead">Fund the engineering that fixes onboarding (P1), builds the unified NFC pass (P2), and ships the partner platform (P3). One team, one roadmap, three releases.</p>
+          <div class="ac-foot">
+            <div class="k">What it covers</div>
+            <div class="v">Onboarding rebuild · wallet integration · partner platform.</div>
+          </div>
+        </div>
+        <div class="ac">
+          <div class="ac-icon-wrap"><svg class="ac-icon" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M 8 22 L 8 34 L 18 34 L 36 44 L 36 12 L 18 22 Z"/><line x1="42" y1="20" x2="46" y2="16"/><line x1="42" y1="28" x2="48" y2="28"/><line x1="42" y1="36" x2="46" y2="40"/><path d="M 16 34 L 16 48 L 22 48 L 22 34"/></svg></div>
+          <h3>Joint marketing to<br />launch the new brand.</h3>
+          <p class="ac-lead">Partner with us to launch MadUnlocked as Madrid's mobility and experience brand — alongside the Tourism Board, EMT and Metro. The product is ready; the city has to introduce it.</p>
+          <div class="ac-foot">
+            <div class="k">What it covers</div>
+            <div class="v">Co-branded launch · Tourism Board partnership · airport presence.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer"><span class="num">12 / 13</span></div>
+  </section>
+
+  <!-- ============ 14. CLOSING ============ -->
+  <section data-label="13 Closing" class="closing dark">
+    <div class="frame" data-comment-anchor="ef99ac2e90-div">
+      <div class="rebrand-eyebrow">In closing</div>
+      <h1>This is not a bike app.<br />This is how people<br /><span class="accent">fall in love</span> with Madrid.</h1>
+
+      <svg class="closing-graphic" viewBox="0 0 1680 280" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYEnd meet" aria-hidden="true" data-comment-anchor="66cc9d464c-svg">
+        <!-- Madrid skyline silhouette -->
+        <g fill="none" stroke="rgba(240, 58, 71, 0.85)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+          <!-- Royal Palace -->
+          <path d="M 60 240 L 60 178 L 80 178 L 80 162 L 116 162 L 116 148 L 184 148 L 184 162 L 218 162 L 218 178 L 240 178 L 240 240" />
+          <!-- Almudena twin spires -->
+          <path d="M 280 240 L 280 188 L 304 188 L 304 156 L 318 138 L 332 156 L 332 188 L 366 188 L 366 168 L 380 142 L 394 168 L 394 188 L 428 188 L 428 156 L 442 138 L 456 156 L 456 188 L 480 188 L 480 240" />
+          <!-- Edificio España -->
+          <path d="M 540 240 L 540 116 L 580 116 L 580 102 L 604 102 L 604 116 L 644 116 L 644 240" />
+          <!-- Metropolis dome -->
+          <path d="M 700 240 L 700 174 Q 740 130 780 174 L 780 240 M 740 130 L 740 108 L 732 108 L 732 96 L 748 96 L 748 108 L 740 108" />
+          <!-- Cibeles -->
+          <path d="M 840 240 L 840 174 L 858 174 L 858 156 L 876 156 L 876 138 L 894 138 L 894 116 L 910 116 L 910 138 L 928 138 L 928 156 L 946 156 L 946 174 L 962 174 L 962 240" />
+          <!-- Apartments -->
+          <path d="M 1020 240 L 1020 184 L 1148 184 L 1148 240" />
+          <!-- Schweppes -->
+          <path d="M 1190 240 L 1190 96 L 1308 96 L 1308 240 M 1216 116 L 1284 116 M 1216 138 L 1284 138 M 1216 160 L 1284 160" />
+          <!-- KIO -->
+          <path d="M 1370 240 L 1380 96 L 1418 96 L 1426 240" />
+          <path d="M 1448 240 L 1458 96 L 1496 96 L 1504 240" />
+          <!-- Cuatro Torres -->
+          <path d="M 1560 240 L 1560 38 L 1586 38 L 1586 240" />
+          <path d="M 1604 240 L 1604 58 L 1630 58 L 1630 240" />
+          <path d="M 1648 240 L 1648 28 L 1670 28 L 1670 240" />
+        </g>
+
+        <!-- Cyclists riding across, bigger and detailed -->
+        <g stroke="rgba(240, 58, 71, 1)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none">
+          <!-- Cyclist 1 -->
+          <g transform="translate(440, 180)">
+            <circle cx="0" cy="40" r="20" />
+            <circle cx="80" cy="40" r="20" />
+            <path d="M 0 40 L 32 40 L 50 8 L 60 40 Z" />
+            <line x1="32" y1="40" x2="60" y2="40" />
+            <line x1="32" y1="40" x2="32" y2="20" />
+            <path d="M 24 20 L 40 20" />
+            <line x1="50" y1="8" x2="76" y2="8" />
+            <path d="M 70 8 L 80 -4 L 90 -4" />
+            <line x1="76" y1="8" x2="80" y2="40" />
+            <circle cx="6" cy="-26" r="8" fill="rgba(240, 58, 71, 1)" />
+            <path d="M 6 -18 L 6 -2 L 24 12 L 24 30 M 6 -8 L -6 8 L -2 22" />
+          </g>
+          <!-- Cyclist 2 -->
+          <g transform="translate(920, 180)">
+            <circle cx="0" cy="40" r="20" />
+            <circle cx="80" cy="40" r="20" />
+            <path d="M 0 40 L 32 40 L 50 8 L 60 40 Z" />
+            <line x1="32" y1="40" x2="60" y2="40" />
+            <line x1="32" y1="40" x2="32" y2="20" />
+            <path d="M 24 20 L 40 20" />
+            <line x1="50" y1="8" x2="76" y2="8" />
+            <path d="M 70 8 L 80 -4 L 90 -4" />
+            <line x1="76" y1="8" x2="80" y2="40" />
+            <circle cx="6" cy="-26" r="8" fill="rgba(240, 58, 71, 1)" />
+            <path d="M 6 -18 L 6 -2 L 24 12 L 24 30 M 6 -8 L -6 8 L -2 22" />
+          </g>
+          <!-- Cyclist 3 -->
+          <g transform="translate(1300, 180)">
+            <circle cx="0" cy="40" r="20" />
+            <circle cx="80" cy="40" r="20" />
+            <path d="M 0 40 L 32 40 L 50 8 L 60 40 Z" />
+            <line x1="32" y1="40" x2="60" y2="40" />
+            <line x1="32" y1="40" x2="32" y2="20" />
+            <path d="M 24 20 L 40 20" />
+            <line x1="50" y1="8" x2="76" y2="8" />
+            <path d="M 70 8 L 80 -4 L 90 -4" />
+            <line x1="76" y1="8" x2="80" y2="40" />
+            <circle cx="6" cy="-26" r="8" fill="rgba(240, 58, 71, 1)" />
+            <path d="M 6 -18 L 6 -2 L 24 12 L 24 30 M 6 -8 L -6 8 L -2 22" />
+          </g>
+        </g>
+
+        <!-- Ground line -->
+        <line x1="0" y1="240" x2="1680" y2="240" stroke="rgba(250,250,250,0.18)" stroke-width="1" />
+      </svg>
+    </div>
+    <div class="footer"><span class="num">13 / 13</span></div>
+  </section>
+
+</deck-stage>
+
+</body>
+</html>
