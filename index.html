@@ -53,7 +53,7 @@
 
     /* Fonts */
     --sans: "Geist", system-ui, -apple-system, "Segoe UI", sans-serif;
-    --mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --mono: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
     --script: "Caveat", "Geist Mono", cursive;
   }
 
@@ -68,6 +68,45 @@
     position: relative;
     font-feature-settings: "ss01", "cv11";
   }
+
+  /* ===== Ambient depth: dot-grid pattern + corner glow ===== */
+  deck-stage section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: radial-gradient(circle, rgba(24, 48, 89, 0.05) 1.3px, transparent 1.6px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+  deck-stage section::after {
+    content: "";
+    position: absolute;
+    top: -260px;
+    right: -200px;
+    width: 760px;
+    height: 760px;
+    background: radial-gradient(circle, rgba(39, 111, 191, 0.07), transparent 68%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  /* dark slides: white dots + warmer glow */
+  .dark::before, .cover::before {
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.055) 1.3px, transparent 1.6px);
+  }
+  .dark::after {
+    background: radial-gradient(circle, rgba(39, 111, 191, 0.18), transparent 66%);
+  }
+  /* keep content above ambient layers */
+  .frame { z-index: 1; }
+
+  /* ===== Card depth tokens ===== */
+  .adv-card, .pt, .ac, .pcard {
+    box-shadow: 0 1px 2px rgba(24, 48, 89, 0.04), 0 14px 34px rgba(24, 48, 89, 0.09);
+  }
+  .pcard.primary { box-shadow: 0 1px 2px rgba(0, 0, 0, 0.10), 0 20px 44px rgba(15, 25, 50, 0.28); }
+  .adv-card { border-top: 3px solid var(--accent); }
+  .why { box-shadow: 0 1px 2px rgba(0,0,0,0.10), 0 16px 38px rgba(0, 0, 0, 0.22); }
 
   /* ===== Reusable atoms ===== */
 
@@ -426,7 +465,7 @@
   /* ============================================ */
   /* SLIDE 3 — BICIMAD TODAY                      */
   /* ============================================ */
-  .today .frame { gap: 56px; }
+  .today .frame { gap: 32px; }
   .stat-row {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -526,10 +565,10 @@
   }
   .pcard {
     background: var(--bg-soft);
-    padding: 32px 36px 28px;
+    padding: 28px 36px 26px;
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 10px;
     border-radius: 24px;
     position: relative;
     overflow: hidden;
@@ -603,8 +642,8 @@
     display: flex;
     gap: 18px;
     font-size: 24px;
-    line-height: 1.3;
-    padding: 10px 0;
+    line-height: 1.28;
+    padding: 6px 0;
     border-bottom: 1px solid rgba(250, 250, 250, 0.12);
     letter-spacing: -0.005em;
   }
@@ -643,6 +682,7 @@
   .prob-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
+    border-top: none;
     gap: 0;
     flex: 1;
     border-top: 1px solid var(--line);
@@ -696,7 +736,7 @@
   /* ============================================ */
   /* SLIDE 6 — PRODUCT VISION                     */
   /* ============================================ */
-  .vision .frame { gap: 64px; }
+  .vision .frame { gap: 28px; }
   .vision-shift {
     display: grid;
     grid-template-columns: 0.85fr 160px 1.15fr;
@@ -705,7 +745,7 @@
     border-bottom: 1px solid rgba(250, 250, 250, 0.18);
   }
   .vc {
-    padding: 44px 40px 44px 0;
+    padding: 30px 40px 30px 0;
     display: flex;
     flex-direction: column;
     gap: 18px;
@@ -747,7 +787,7 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 36px;
-    margin-top: 16px;
+    margin-top: 0;
   }
   .why {
     display: flex;
@@ -985,7 +1025,7 @@
   .onepass-body {
     display: grid;
     grid-template-columns: 480px 1fr;
-    gap: 100px;
+    gap: 180px;
     flex: 1;
     min-height: 0;
     align-items: center;
@@ -1426,6 +1466,111 @@
     color: #FAFAFA;
     letter-spacing: -0.02em;
   }
+
+  /* ===== Batch revisions ===== */
+  .footer { display: none !important; }
+
+  /* Slide 2 transition */
+  .competing .frame.transition { justify-content: center; align-items: flex-start; gap: 36px; }
+  .transition-inner { display: flex; flex-direction: column; gap: 30px; max-width: 1500px; position: relative; z-index: 2; }
+  .transition-title { font-size: 150px; line-height: 0.96; }
+  .transition-sub { font-size: 38px; line-height: 1.35; color: var(--muted); max-width: 1250px; font-weight: 400; letter-spacing: -0.012em; }
+  .transition-skyline { position: absolute; left: 0; right: 0; bottom: 0; width: 100%; height: 210px; color: var(--accent); opacity: 0.92; }
+
+  /* Timeline note (rhs) */
+  .rhs .tl-label { display: block; font-family: var(--mono); font-size: 24px; letter-spacing: 0.04em; color: var(--muted); }
+  .rhs .tl-date { display: block; font-family: var(--sans); font-size: 34px; font-weight: 600; color: var(--accent); letter-spacing: -0.02em; margin-top: 4px; }
+
+  /* Roadmap restructured cards */
+  .rm-bignum { font-family: var(--sans); font-weight: 600; font-size: 132px; line-height: 0.85; color: var(--accent); letter-spacing: -0.04em; }
+  .roadmap .rm { justify-content: flex-start; gap: 18px; }
+  .roadmap .rm h3 { font-size: 48px; }
+  .roadmap .rm .rm-when { font-size: 28px; color: var(--ink); font-weight: 500; }
+  .roadmap .rm .rm-pill { margin-top: auto; }
+
+  /* Strategic advantage title (slide 4) */
+  .adv-title { font-family: var(--sans); font-size: 34px; font-weight: 600; color: var(--ink); letter-spacing: -0.02em; margin: 0 0 10px; }
+  .today .adv-cards { margin-top: 0; }
+
+  /* Phase 1 — 4 fixes 2x2 */
+  .phase .feat-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 1fr; }
+  .phase .feat-grid .feat { border-right: none; border-bottom: 1px solid var(--line); padding: 40px 56px 40px 0; }
+  .phase .feat-grid .feat:nth-child(2n) { padding-left: 56px; padding-right: 0; border-left: 1px solid var(--line); }
+  .phase .feat-grid .feat:nth-child(n+3) { border-bottom: none; }
+  .phase .feat-grid .feat h4 { font-size: 42px; }
+  .phase .feat-grid .feat p { font-size: 27px; }
+
+  /* Partners — 3 cards */
+  .partners .partner-grid { grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr; }
+  .partners .pt { padding: 48px 44px; }
+  .partners .pt h4 { font-size: 42px; }
+  .partners .pt .pt-d { font-size: 27px; }
+  .partners .pt-icon { width: 60px; height: 60px; }
+
+
+  /* Roadmap timeline (slide 7) */
+  .roadmap .rm-timeline { position: relative; margin-top: 56px; flex: 1; }
+  .roadmap .rm-track { position: absolute; top: 13px; left: 16px; right: 16px; height: 3px; background: var(--line); z-index: 0; }
+  .roadmap .rm-stops { position: relative; z-index: 1; display: grid; grid-template-columns: repeat(3, 1fr); gap: 56px; }
+  .roadmap .rm-stop { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; padding-right: 32px; }
+  .roadmap .rm-dot { width: 28px; height: 28px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 0 9px var(--bg); margin-bottom: 18px; }
+  .roadmap .rm-num { font-family: var(--script); font-size: 40px; font-weight: 600; color: var(--accent); line-height: 1; white-space: nowrap; }
+  .roadmap .rm-stop h3 { font-family: var(--sans); font-weight: 600; font-size: 46px; line-height: 1.0; letter-spacing: -0.03em; color: var(--ink); margin: 0; }
+  .roadmap .rm-when { font-family: var(--sans); font-size: 32px; font-weight: 600; color: var(--ink); letter-spacing: -0.02em; }
+  .roadmap .rm-pill { font-family: var(--mono); font-size: 24px; letter-spacing: 0.04em; color: var(--muted); margin-top: 8px; padding: 8px 20px; border: 1px solid var(--line-2); border-radius: 999px; }
+
+  /* Partner cards — refined (slide 11) */
+  .partners .section-head { flex-direction: row; justify-content: space-between; align-items: flex-end; gap: 60px; }
+  .partners .section-head .lhs { flex: 1; }
+  .partners .section-head .rhs { text-align: right; flex: 0 0 auto; padding-bottom: 8px; }
+  .partners .partner-grid { grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr; gap: 28px; }
+  .partners .pt { padding: 44px 40px; position: relative; background: var(--bg-soft); border-radius: 24px; display: flex; flex-direction: column; gap: 18px; border-top: 4px solid var(--accent); }
+  .partners .pt-no { position: absolute; top: 36px; right: 38px; font-family: var(--mono); font-size: 22px; color: var(--muted-2); }
+  .partners .pt-icon-badge { width: 80px; height: 80px; border-radius: 20px; background: var(--red-soft); color: var(--accent); display: flex; align-items: center; justify-content: center; }
+  .partners .pt-icon-badge svg { width: 40px; height: 40px; }
+  .partners .pt h4 { font-family: var(--sans); font-weight: 600; font-size: 38px; line-height: 1.08; letter-spacing: -0.02em; color: var(--ink); margin: 0; }
+  .partners .pt .pt-d { font-size: 26px; line-height: 1.4; color: var(--muted); margin: 0; }
+
+
+  /* Persona — equal cards, photo banner on top */
+  .persona-grid { grid-template-columns: 1fr 1fr; align-items: stretch; }
+  .persona .pcard { gap: 8px; padding: 24px 32px 22px; }
+  .persona .pcard .pavatar { width: 100%; height: 76px; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 4px; }
+  .persona .pcard .pavatar svg { width: 34px; height: 34px; }
+  .persona .pcard .pavatar::after { content: none; }
+  .persona .pcard .ptag { margin: 0; font-size: 30px; }
+  .persona .pcard .pname { margin: 0; font-size: 38px; }
+  .persona .pcard .psub { margin-top: 2px; }
+  .persona .prow { padding: 5px 0; }
+  .persona .pquote { margin-top: 2px; padding-top: 12px; font-size: 24px; border-top: none; }
+
+  /* Roadmap phase icons (slide 7) */
+  .roadmap .rm-ico { width: 56px; height: 56px; border-radius: 16px; background: var(--red-soft); color: var(--accent); display: flex; align-items: center; justify-content: center; margin-bottom: 4px; }
+  .roadmap .rm-ico svg { width: 30px; height: 30px; }
+
+  /* Vision — why-grid title (slide 6) */
+  .vision .why-title { font-family: var(--sans); font-size: 30px; font-weight: 600; color: #FFFFFF; letter-spacing: -0.02em; margin: 0 0 4px; }
+
+  /* Problem cards — icon + accent (slide 5) */
+  .problems .prob { border-right: none !important; padding: 40px 44px !important; border-top: 4px solid var(--accent); gap: 22px; }
+  .problems .prob:last-child { padding-left: 44px !important; }
+  .prob-ico { width: 64px; height: 64px; border-radius: 18px; background: var(--red-soft); color: var(--accent); display: flex; align-items: center; justify-content: center; }
+  .prob-ico svg { width: 34px; height: 34px; }
+
+
+  /* Persona header — square photo left of name block */
+  .persona .phead { display: flex; flex-direction: row; align-items: center; gap: 24px; margin-bottom: 4px; }
+  .persona .phead-text { display: flex; flex-direction: column; gap: 3px; }
+  .persona .pcard .pavatar { width: 180px; height: 180px; border-radius: 18px; flex: 0 0 180px; margin-bottom: 0; display: flex; align-items: center; justify-content: center; }
+  .persona .pcard .pavatar svg { width: 56px; height: 56px; }
+  .persona .pcard .pavatar::after { content: none; }
+  .persona .pcard .ptag { margin: 0; font-size: 28px; }
+  .persona .pcard .pname { margin: 0; font-size: 40px; }
+  .persona .pcard .psub { margin-top: 0; }
+
+
+  .persona .pcard .pavatar img { width: 100%; height: 100%; object-fit: cover; border-radius: inherit; display: block; }
+  .persona .pcard .pavatar { overflow: hidden; }
 </style>
 </head>
 <body>
@@ -1443,7 +1588,7 @@
           <img class="mark-logo" src="assets/bicimad-logo.png" alt="BiciMAD" />
         </div>
         <div class="meta" data-comment-anchor="65765446f8-div">
-          <span class="meta-strong" data-comment-anchor="e6467f5746-span">Product Vision · Technology Product Management</span>
+          <span class="meta-strong" data-comment-anchor="e6467f5746-span" style="font-family: &quot;Trebuchet MS&quot;">Product Vision · Technology Product Management</span>
         </div>
       </div>
 
@@ -1488,7 +1633,7 @@
 
         <h1 class="cover-headline">From a bike app to Madrid's<br /><span class="accent">experience platform.</span></h1>
 
-        <p class="cover-sub">The story of how BiciMAD evolves from a single-mode transport app — across three phases, two asks, one city.</p>
+        
       </div>
 
       <!-- Skyline + footer -->
@@ -1544,45 +1689,29 @@
 
   <!-- ============ 2. MADRID IS COMPETING ============ -->
   <section data-label="02 Madrid is competing" class="competing">
-    <div class="frame">
-      <div class="section-head">
-        <div class="lhs">
-          <div class="eyebrow">The opportunity</div>
-          <h2 class="title" data-comment-anchor="5af7e914ac-h2">Madrid is <span class="accent">competing.</span></h2>
-        </div>
-        <p class="body rhs" data-comment-anchor="2e97b6e8ed-p">Every European capital is fighting for the same tourists, the same talent, the same business. The ones that win make the city itself easy to use.</p>
+    <div class="frame transition" data-comment-anchor="85b8f3909c-div">
+      <div class="transition-inner" style="text-align: left">
+        <div class="eyebrow" style="font-size: 50px">The opportunity</div>
+        <h2 class="title transition-title" style="font-size: 150px">Madrid is <span class="accent">competing.</span></h2>
+        <p class="transition-sub" data-comment-anchor="98e8e090db-p" style="font-size: 36px">Every European capital is fighting for the same tourists, the same talent, the same business. The ones that win make the city itself easy to use.</p>
       </div>
-
-      <div class="city-grid">
-        <div class="city-cell">
-          <svg class="city-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M 31 6 L 33 6 L 33 10 L 35 10 L 35 14 L 37 14 L 37 18 L 39 18 L 39 24 L 41 24 L 41 28 L 38 28 L 38 56 L 26 56 L 26 28 L 23 28 L 23 24 L 25 24 L 25 18 L 27 18 L 27 14 L 29 14 L 29 10 L 31 10 Z M 28 30 L 36 30 L 36 38 L 28 38 Z" /><path d="M 18 58 L 46 58 L 46 60 L 18 60 Z" opacity="0.6"/></svg>
-          <div class="ctag">UK · capital</div>
-          <div class="cname">London</div>
-          <div class="cprod">Oyster</div>
-          <div class="csince">Since 2003</div>
-        </div>
-        <div class="city-cell">
-          <svg class="city-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M 31 4 L 33 4 L 35 14 L 35 18 L 37 18 L 37 22 L 35 22 L 35 26 L 33 26 L 36 36 L 36 38 L 39 42 L 39 46 L 43 46 L 49 58 L 45 58 L 40 50 L 36 50 L 36 58 L 28 58 L 28 50 L 24 50 L 19 58 L 15 58 L 21 46 L 25 46 L 25 42 L 28 38 L 28 36 L 31 26 L 29 26 L 29 22 L 27 22 L 27 18 L 29 18 L 29 14 L 31 4 Z M 26 30 L 38 30 L 38 32 L 26 32 Z" /></svg>
-          <div class="ctag">FR · capital</div>
-          <div class="cname">Paris</div>
-          <div class="cprod">Navigo</div>
-          <div class="csince">Since 2001</div>
-        </div>
-        <div class="city-cell" data-comment-anchor="32e9859667-div">
-          <svg class="city-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="currentColor"><path d="M 16 58 L 16 30 L 19 30 L 19 26 L 23 26 L 23 22 L 27 22 L 27 18 L 31 18 L 31 14 L 33 14 L 33 18 L 37 18 L 37 22 L 41 22 L 41 26 L 45 26 L 45 30 L 48 30 L 48 58 Z" /><rect x="20" y="38" width="5" height="6" fill="#FFFFFF" /><rect x="29.5" y="38" width="5" height="6" fill="#FFFFFF" /><rect x="39" y="38" width="5" height="6" fill="#FFFFFF" /><rect x="20" y="48" width="5" height="6" fill="#FFFFFF" /><rect x="29.5" y="48" width="5" height="8" fill="#FFFFFF" /><rect x="39" y="48" width="5" height="6" fill="#FFFFFF" /></svg>
-          <div class="ctag">NL · capital</div>
-          <div class="cname">Amsterdam</div>
-          <div class="cprod">OV-chipkaart</div>
-          <div class="csince">Since 2005</div>
-        </div>
-        <div class="city-cell madrid">
-          <svg class="city-icon" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" fill="currentColor" data-comment-anchor="f8e0c15cdc-svg"><path d="M 8 32 L 6 28 L 4 28 L 6 24 L 9 24 L 12 22 L 11 16 L 14 16 L 16 22 L 19 21 L 18 14 L 21 14 L 23 22 L 28 24 L 36 24 L 44 25 L 50 28 L 55 32 L 58 30 L 60 32 L 58 36 L 55 38 L 53 42 L 51 50 L 47 50 L 49 42 L 46 42 L 45 50 L 41 50 L 42 42 L 23 41 L 22 50 L 18 50 L 19 41 L 14 39 L 13 50 L 9 50 L 11 38 L 9 35 Z" /><path d="M 18 58 L 50 58 L 50 60 L 18 60 Z" opacity="0.6"/></svg>
-          <div class="ctag" data-comment-anchor="925674b2f1-div" style="color: rgb(240, 58, 71)">ES · capital</div>
-          <div class="cname">Madrid</div>
-          <div class="cprod">4 apps. 3 cards.</div>
-          <div class="csince">Today.</div>
-        </div>
-      </div>
+      <svg class="transition-skyline" viewBox="0 0 1680 240" preserveAspectRatio="xMidYEnd meet" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M 60 240 L 60 178 L 80 178 L 80 162 L 116 162 L 116 148 L 184 148 L 184 162 L 218 162 L 218 178 L 240 178 L 240 240" />
+          <path d="M 280 240 L 280 188 L 304 188 L 304 156 L 318 138 L 332 156 L 332 188 L 366 188 L 366 168 L 380 142 L 394 168 L 394 188 L 428 188 L 428 156 L 442 138 L 456 156 L 456 188 L 480 188 L 480 240" />
+          <path d="M 540 240 L 540 116 L 580 116 L 580 102 L 604 102 L 604 116 L 644 116 L 644 240" />
+          <path d="M 700 240 L 700 174 Q 740 130 780 174 L 780 240 M 740 130 L 740 108 L 732 108 L 732 96 L 748 96 L 748 108 L 740 108" />
+          <path d="M 840 240 L 840 174 L 858 174 L 858 156 L 876 156 L 876 138 L 894 138 L 894 116 L 910 116 L 910 138 L 928 138 L 928 156 L 946 156 L 946 174 L 962 174 L 962 240" />
+          <path d="M 1020 240 L 1020 184 L 1148 184 L 1148 240" />
+          <path d="M 1190 240 L 1190 96 L 1308 96 L 1308 240 M 1216 116 L 1284 116 M 1216 138 L 1284 138 M 1216 160 L 1284 160" />
+          <path d="M 1370 240 L 1380 96 L 1418 96 L 1426 240" />
+          <path d="M 1448 240 L 1458 96 L 1496 96 L 1504 240" />
+          <path d="M 1560 240 L 1560 38 L 1586 38 L 1586 240" />
+          <path d="M 1604 240 L 1604 58 L 1630 58 L 1630 240" />
+          <path d="M 1648 240 L 1648 28 L 1670 28 L 1670 240" />
+          <line x1="0" y1="240" x2="1680" y2="240" stroke-opacity="0.3" stroke-width="1" />
+        </g>
+      </svg>
     </div>
     <div class="footer"><span class="num">02 / 13</span></div>
   </section>
@@ -1600,15 +1729,11 @@
 
       <div class="persona-grid">
         <div class="pcard primary">
-          <div class="ptag" style="color: rgb(240, 58, 71)">Primary · Tourists & international visitors</div>
-          <div class="phead" data-comment-anchor="8dac0bc0f5-div">
-            <div class="pavatar"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1.5">
-        <rect x="3" y="6" width="26" height="22" rx="2" />
-        <circle cx="16" cy="16" r="5" />
-        <path d="M 11 6 L 13 3 L 19 3 L 21 6" />
-      </svg></div>
-            <div>
-              <h3 class="pname">Felipe Swartinez</h3>
+          <div class="phead">
+            <div class="pavatar" data-comment-anchor="34372233cf-div"><img src="assets/Felipe.png" alt="Felipe" /></div>
+            <div class="phead-text">
+              <div class="ptag" data-comment-anchor="3aabf9c1fa-div">Primary · Tourists & international visitors</div>
+              <h3 class="pname">Felipe Martinez</h3>
               <div class="psub">Student · 28 · just moved to Madrid</div>
             </div>
           </div>
@@ -1628,33 +1753,37 @@
             <div class="k">Drivers</div>
             <div class="v">Ease of access · price · sustainability · prefers English.</div>
           </div>
-          <div class="pquote">"I just need one thing that works — on day one, in English, with my own card."</div>
+          <div class="pquote" data-comment-anchor="18a20ceacf-div">"I want to get to school on time, but I am also excited to eplore the city"</div>
         </div>
 
         <div class="pcard secondary">
-          <div class="ptag">Secondary · Daily commuters</div>
           <div class="phead">
-            <div class="pavatar"><svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="1.5">
-        <rect x="3" y="6" width="26" height="22" rx="2" />
-        <circle cx="16" cy="16" r="5" />
-        <path d="M 11 6 L 13 3 L 19 3 L 21 6" />
-      </svg></div>
-            <div>
-              <h3 class="pname">María Rodríguez</h3>
-              <div class="psub">Madrileña · daily commuter</div>
+            <div class="pavatar" style="height: 180px"><img src="assets/Maria.jpg" alt="María" /></div>
+            <div class="phead-text">
+              <div class="ptag">Secondary · Daily commuters</div>
+              <h3 class="pname">Lucía Rodríguez</h3>
+              <div class="psub">Madrileña · 34 · daily commuter</div>
             </div>
           </div>
           <div class="prow">
-            <div class="k">Gains</div>
-            <div class="v">One pass — no more lost metro cards. Seamless bike + bus + metro commute. Daily & weekly fare cap.</div>
+            <div class="k">Bio</div>
+            <div class="v">Madrid native. Doesn't own a car. Crosses the city every day, including nights, after the metro has closed.</div>
           </div>
           <div class="prow">
-            <div class="k">Why now</div>
-            <div class="v">Locals legitimise the platform. A city that works for Madrileños wins tourists too.</div>
+            <div class="k">Goals</div>
+            <div class="v">Get to work <strong>on time, every day</strong> — no delays, no surprises.</div>
           </div>
+          <div class="prow">
+            <div class="k">Pains</div>
+            <div class="v">Juggles multiple cards and more than one app. The metro doesn't run when her night shift ends.</div>
+          </div>
+          <div class="prow">
+            <div class="k">Drivers</div>
+            <div class="v">One bundle for everything — to save time and money.</div>
+          </div>
+          <div class="pquote">"I just want one card and one app that gets me around, even at 2am."</div>
         </div>
       </div>
-    </div>
     <div class="footer"><span class="num">03 / 13</span></div>
   </section>
 
@@ -1666,7 +1795,7 @@
           <div class="eyebrow">The product</div>
           <h2 class="title">BiciMAD <span class="muted">today.</span></h2>
         </div>
-        <p class="body rhs">Madrid's public e-bike platform · operated by EMT · part of the city's public transport offering.</p>
+        <p class="body rhs" data-comment-anchor="a8d1ac2ec9-p">Madrid's public e-bike platform · Operated by EMT · Part of the city's public transport offering.</p>
       </div>
 
       <div class="stat-row">
@@ -1684,6 +1813,7 @@
         </div>
       </div>
     
+      <h3 class="adv-title">Our strategic advantage</h3>
       <div class="adv-cards" data-comment-anchor="2f402cb16b-cards">
         <div class="adv-card">
           <div class="adv-num">01</div>
@@ -1696,7 +1826,7 @@
           <div class="adv-d">Direct path into Madrid's transport stack</div>
         </div>
         <div class="adv-card">
-          <div class="adv-num">04</div>
+          <div class="adv-num">03</div>
           <div class="adv-h">Green positioning</div>
           <div class="adv-d">Aligned with Madrid Central and the city's strategy</div>
         </div>
@@ -1706,7 +1836,7 @@
   </section>
 
   <!-- ============ 5. TWO PROBLEMS ============ -->
-  <section data-label="05 Two problems" class="problems">
+  <section data-label="05 Two problems" class="problems" data-comment-anchor="bfc245b0ee-section">
     <div class="frame">
       <div class="section-head">
         <div class="lhs">
@@ -1714,25 +1844,25 @@
           <h2 class="title">Two problems holding<br />Madrid <span class="accent">back.</span></h2>
         </div>
         </div>
-      <div class="prob-grid">
+      <div class="prob-grid" data-comment-anchor="ed6d83db26-div">
         <div class="prob">
+          <div class="prob-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.5 2.8-6 6-6 1.4 0 2.7.4 3.7 1.2"/><circle cx="17.5" cy="16.5" r="4.5"/><path d="M15.8 14.8l3.4 3.4M19.2 14.8l-3.4 3.4"/></svg></div>
           <h3 data-comment-anchor="cdc379c8e1-h3">Painful onboarding</h3>
           <ul class="prob-list">
             <li><span class="x">01</span>Requires a Spanish phone number to register</li>
             <li><span class="x">02</span>Credit card must be added via external browser</li>
-            <li><span class="x">03</span>App unavailable on Google Play outside Spain</li>
-            <li><span class="x">04</span>English translation is subpar and confusing</li>
-            <li><span class="x">05</span>Multiple unnecessary steps deter new users</li>
+            <li><span class="x">03</span>English translation is subpar and confusing</li>
+            <li><span class="x">04</span>Multiple unnecessary steps deter new users</li>
           </ul>
         </div>
         <div class="prob">
+          <div class="prob-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="8" height="8" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="13" y="14" width="8" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/></svg></div>
           <h3>Fragmented transport</h3>
           <ul class="prob-list">
             <li><span class="x">01</span>Metro card — separate registration and top-up</li>
             <li><span class="x">02</span>BiciMAD — completely separate app and billing</li>
-            <li><span class="x">03</span>EMT buses — own system, own subscription</li>
+            <li data-comment-anchor="f777b274af-li"><span class="x">03</span>Tren de Cercanías — own system, own subscription</li>
             <li><span class="x">04</span>Airport — top-up only at Aeropuerto T4 station</li>
-            <li><span class="x">05</span>No single card works across all modes</li>
           </ul>
         </div>
       </div>
@@ -1742,7 +1872,7 @@
 
   <!-- ============ 6. PRODUCT VISION ============ -->
   <section data-label="06 Product vision" class="vision dark">
-    <div class="frame">
+    <div class="frame" data-comment-anchor="756540fb44-div">
       <div class="section-head">
         <div class="lhs">
           <div class="eyebrow">Our product vision</div>
@@ -1765,6 +1895,7 @@
         </div>
       </div>
 
+      <h3 class="why-title">Why now</h3>
       <div class="why-grid">
         <div class="why">
           <div class="wn" data-comment-anchor="026c1cc90b-div" style="color: rgb(240, 58, 71)">01 · Green credentials</div>
@@ -1788,7 +1919,7 @@
 
   <!-- ============ 7. THREE PHASES ============ -->
   <section data-label="07 Three phases" class="roadmap">
-    <div class="frame">
+    <div class="frame" data-comment-anchor="5ba313ef36-div">
       <div class="section-head">
         <div class="lhs">
           <div class="eyebrow">The plan</div>
@@ -1796,27 +1927,33 @@
         </div>
         </div>
 
-      <div class="rm-grid">
-        <div class="rm">
-          <div class="rm-phase">Phase 01</div>
-          <div class="rm-when" data-comment-anchor="254280cb74-div">Q3 2026 · still BiciMAD</div>
-          <h3>Fix the front door</h3>
-          <p class="rm-lead">Remove every barrier between a new user and their first ride. Onboarding and payment, rebuilt.</p>
-          <div class="rm-pill" style="color: rgb(240, 58, 71)">Foundation</div>
-        </div>
-        <div class="rm middle" data-comment-anchor="0b7762e6a1-div">
-          <div class="rm-phase">Phase 02</div>
-          <div class="rm-when" data-comment-anchor="6e9146ba70-div">Q4 2026 · launch MadUnlocked</div>
-          <h3>One city, one pass</h3>
-          <p class="rm-lead">A single digital NFC pass for bikes, buses and metro. The rebrand of Madrid mobility.</p>
-          <div class="rm-pill" style="color: rgb(240, 58, 71)">Integration & rebrand</div>
-        </div>
-        <div class="rm">
-          <div class="rm-phase">Phase 03</div>
-          <div class="rm-when" data-comment-anchor="c67dacdafa-div">Q1 2027 · the platform</div>
-          <h3>Madrid's first touchpoint</h3>
-          <p class="rm-lead">Hotels, museums and tourism partners distribute the pass. The city becomes the product.</p>
-          <div class="rm-pill" style="color: rgb(240, 58, 71)">Expansion</div>
+      <div class="rm-timeline">
+        <div class="rm-track"></div>
+        <div class="rm-stops">
+          <div class="rm-stop">
+            <div class="rm-dot"></div>
+            <div class="rm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="3" width="14" height="18" rx="1.5"/><path d="M9 3v18"/><circle cx="12.5" cy="12" r="1.1" fill="currentColor" stroke="none"/></svg></div>
+            <div class="rm-num">Phase 01</div>
+            <h3>Fix the front door</h3>
+            <div class="rm-when">Q3 2026</div>
+            <div class="rm-pill">Foundation</div>
+          </div>
+          <div class="rm-stop">
+            <div class="rm-dot"></div>
+            <div class="rm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20"/><circle cx="7" cy="14" r="1.2" fill="currentColor" stroke="none"/></svg></div>
+            <div class="rm-num" data-comment-anchor="d06a8af597-div">Phase 02</div>
+            <h3 data-comment-anchor="56e653163a-h3">One city, one pass</h3>
+            <div class="rm-when">Q4 2026</div>
+            <div class="rm-pill">Integration</div>
+          </div>
+          <div class="rm-stop">
+            <div class="rm-dot"></div>
+            <div class="rm-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V8l6-4 6 4v13"/><path d="M15 21V11l6 4v6"/><path d="M7 12h0M7 16h0M11 12h0M11 16h0" stroke-width="2"/></svg></div>
+            <div class="rm-num">Phase 03</div>
+            <h3>Madrid's first touchpoint</h3>
+            <div class="rm-when">Q1–Q2 2027</div>
+            <div class="rm-pill">Expansion</div>
+          </div>
         </div>
       </div>
     </div>
@@ -1826,45 +1963,35 @@
   <!-- ============ 8. PHASE 1 ============ -->
   <section data-label="08 Phase 1" class="phase">
     <div class="frame">
-      <div class="phase-head">
+      <div class="phase-head" data-comment-anchor="959415426e-div">
         <div class="lhs">
           <div class="phase-num">Phase 01 · Onboarding</div>
           <h2 class="title">Fix the <span class="accent">front door.</span></h2>
           <p class="body" style="max-width: 1200px;">Remove every barrier between a new user and their first ride. Still BiciMAD — but a BiciMAD that works for Felipe on his first day in the city.</p>
         </div>
-        <div class="rhs"></div>
+        <div class="rhs"><span class="tl-label">Timeline</span><span class="tl-date">Q3 2026</span></div>
       </div>
 
       <div class="feat-grid">
         <div class="feat">
           <div class="fix">Fix 01</div>
-          <h4>Any phone number</h4>
-          <p>Register with any international number — no Spanish SIM required.</p>
+          <h4 data-comment-anchor="98280c1bbf-h4">Any phone number</h4>
+          <p>Register with any phone number — no Spanish number needed.</p>
         </div>
         <div class="feat">
           <div class="fix">Fix 02</div>
-          <h4>Valid passport</h4>
-          <p>Passport accepted as ID — removes the NIE barrier for newcomers.</p>
+          <h4>Improve UX</h4>
+          <p>Remove unnecessary steps and keep the whole experience in the app — no external browsing.</p>
         </div>
         <div class="feat">
           <div class="fix">Fix 03</div>
-          <h4>In-app payment</h4>
-          <p>Add card directly in the app — no external browser redirect.</p>
+          <h4 data-comment-anchor="1a93a56718-h4">In-app top-up</h4>
+          <p>Apple Pay & Google Pay integrated as buttons inside the app — top up without leaving it.</p>
         </div>
         <div class="feat">
           <div class="fix">Fix 04</div>
-          <h4>Apple & Google Pay</h4>
-          <p>One-tap wallet payment — faster, safer, already in every pocket.</p>
-        </div>
-        <div class="feat">
-          <div class="fix">Fix 05</div>
-          <h4>Global app access</h4>
-          <p>Remove the locale restriction on Google Play — any country can download.</p>
-        </div>
-        <div class="feat">
-          <div class="fix">Fix 06</div>
-          <h4>English first</h4>
-          <p>Full English UX overhaul — tourists and expats feel at home.</p>
+          <h4>Improve translation</h4>
+          <p>Polished English so native English speakers can navigate with ease.</p>
         </div>
       </div>
     </div>
@@ -1872,19 +1999,21 @@
   </section>
 
   <!-- ============ 9. REBRAND REVEAL ============ -->
-  <section data-label="09 BiciMAD becomes MadUnlocked" class="rebrand dark">
+  <section data-label="09 BiciMAD becomes MadOne" class="rebrand dark">
     <div class="frame">
-      <div class="rebrand-eyebrow">Before Phase 02 begins, everything changes</div>
+      <div class="rebrand-eyebrow">With Phase 02, everything changes</div>
       <h1>
         <span class="strike">BiciMAD</span>
         <span class="becomes">becomes</span>
-        <span class="name"><span class="accent">Mad</span>Unlocked.</span>
+        <span class="name" data-comment-anchor="3723f25e3e-span"><span class="accent">Mad</span>One.</span>
       </h1>
       <div class="tagline">One city.  One pass.  One experience.</div>
       <div class="modes">
         <span>Bikes</span><span class="sep">·</span>
         <span>Buses</span><span class="sep">·</span>
-        <span>Metro</span>
+        <span>Metro</span><span class="sep">·</span>
+        <span>Light Rail</span><span class="sep">·</span>
+        <span>Tren de Cercanías</span>
       </div>
     </div>
     <div class="footer"><span class="num">09 / 13</span></div>
@@ -1899,13 +2028,13 @@
           <h2 class="title">One Madrid, <span class="accent">one pass.</span></h2>
           <p class="body" style="max-width: 1100px;">A single digital NFC pass for bikes, buses and metro. In Apple Wallet and Google Wallet. No new card to carry, nothing new to download.</p>
         </div>
-        <div class="rhs"></div>
+        <div class="rhs"><span class="tl-label">Timeline</span><span class="tl-date">Q4 2026</span></div>
       </div>
 
       <div class="onepass-body">
         <div class="pass-card" data-comment-anchor="c90ce2edf8-div">
           <div class="pc-row">
-            <div class="pc-logo"><span class="accent">Mad</span>Unlocked</div>
+            <div class="pc-logo"><span class="accent">Mad</span>One</div>
             <div class="pc-chip"></div>
           </div>
           <div class="pc-name">Felipe S.</div>
@@ -1966,55 +2095,32 @@
       <div class="section-head" data-comment-anchor="a6e6c4b54f-div">
         <div class="lhs">
           <div class="eyebrow">Phase 03 · Platform &amp; Ecosystem</div>
-          <h2 class="title" data-comment-anchor="f9a7cd3339-h2">Build the <span class="accent">Ecosystem.</span></h2>
-          <p class="body rhs" style="max-width: 1200px;">Bikes become the first touchpoint. Hotels, museums, restaurants and tech partners benefit alongside — and become reasons to come back.</p>
+          <h2 class="title" data-comment-anchor="f9a7cd3339-h2">Build the <span class="accent">ecosystem.</span></h2>
+          <p class="body rhs" style="max-width: 1200px; text-align: left;" data-comment-anchor="e1caedc873-p">Bikes become the first touchpoint for people exploring and falling in love with Madrid. Local businesses benefit alongside, becoming reasons to come back.</p>
         </div>
-        <div class="rhs"></div>
+        <div class="rhs"><span class="tl-label">Timeline</span><span class="tl-date" data-comment-anchor="f1f3daf5ce-span">Q1–Q2 2027</span></div>
       </div>
 
       <div class="partner-grid">
-        <div class="pt" data-comment-anchor="3c5fd63664-div">
-          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 19V8"/><path d="M21 19V8"/><path d="M3 8h18v11H3z" stroke="none"/><path d="M3 14h18"/><path d="M7 14V11a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3"/><path d="M3 19h18"/></svg></div>
-          <h4>Hotels</h4>
-          <p class="pt-d">Pre-load MadUnlocked at check-in. Pass is on the phone before the bag is unpacked.</p>
+        <div class="pt" data-comment-anchor="3c5fd63664-div" style="height: 388px">
+          <span class="pt-no">01</span>
+          <div class="pt-icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M2 10h20"/><circle cx="8" cy="14" r="1.4" fill="currentColor" stroke="none"/></svg></div>
+          <h4>Introduce a Tourist Card</h4>
+          <p class="pt-d">A one-day free pass for tourists. Partner with hotels to distribute it at check-in.</p>
         </div>
-        <div class="pt">
-          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 8 L12 3 L22 8"/><path d="M3 8 V19"/><path d="M21 8 V19"/><path d="M7 11 V17"/><path d="M11 11 V17"/><path d="M15 11 V17"/><path d="M19 11 V17"/><path d="M2 19 L22 19"/><path d="M2 21 L22 21"/></svg></div>
-          <h4>Museums &amp; galleries</h4>
-          <p class="pt-d" data-comment-anchor="d3eaa0bd36-d">Discounted entry and priority access for MadUnlocked pass holders.</p>
+        <div class="pt" data-comment-anchor="f087398986-h4-card" style="height: 388px">
+          <span class="pt-no">02</span>
+          <div class="pt-icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s-8-7.5-8-13a8 8 0 0 1 16 0c0 5.5-8 13-8 13Z"/><circle cx="12" cy="9" r="3"/></svg></div>
+          <h4>Google Maps integration</h4>
+          <p class="pt-d">When users search a route, the bike option includes a button straight to the MadOne app.</p>
         </div>
-        <div class="pt">
-          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19 C 5 16, 9 16, 9 13 C 9 10, 5 10, 5 7 C 5 4, 9 4, 11 4"/><path d="M11 4 L17 4 A 3 3 0 0 1 17 10 L14 10 A 3 3 0 0 0 14 16 L 19 16"/><circle cx="19" cy="19" r="2.5" fill="currentColor"/></svg></div>
-          <h4>Biking routes</h4>
-          <p class="pt-d">Curated neighborhood tours — La Latina, Malasaña, Retiro — built into the app.</p>
-        </div>
-        <div class="pt">
-          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s-8-7.5-8-13a8 8 0 0 1 16 0c0 5.5-8 13-8 13Z"/><circle cx="12" cy="9" r="3"/></svg></div>
-          <h4>Google Maps</h4>
-          <p class="pt-d" data-comment-anchor="gmaps-card">Bike routes surface as a transit option inside Google Maps — search a destination, tap to ride.</p>
-        </div>
-        <div class="pt">
-          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 2 V11 A2 2 0 0 1 5 13 H4 V22"/><path d="M11 2 V22"/><path d="M11 2 V8 A3 3 0 0 0 14 11 H15 V22"/><path d="M18 2 C20 2, 21 4, 21 7 S20 13, 18 13 V22"/></svg></div>
-          <h4>Restaurants &amp; shops</h4>
-          <p class="pt-d">Pass-holder discounts and perks across Madrid's food and retail scene.</p>
-        </div>
-        <div class="pt">
-          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12 L13 12 L9 20 L7 20 L9 12 L4 12 L2 14 L1 13 L3 9 L1 5 L2 4 L4 6 L9 6 L7 -2 L9 -2 L13 6 L21 6 A 2 2 0 0 1 21 12 Z" transform="translate(0, 4)"/></svg></div>
-          <h4>Airports</h4>
-          <p class="pt-d">Pre-arrival pass activation at Barajas — passport scan, ready to ride at landing.</p>
-        </div>
-        <div class="pt">
-          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14 L2 11 L4 11 L5 9 L4 6 L6 6 L7 9 L9 9 L9 6 L11 6 L12 9 L17 10 L21 11 L22 13 L20 14 L19 17 L19 20 L17 20 L17 17 L15 17 L15 20 L13 20 L13 17 L8 17 L8 20 L6 20 L6 17 L4 16 L4 19 L3 19 L3 14 Z"/></svg></div>
-          <h4>Madrid Tourism Board</h4>
-          <p class="pt-d">Co-branded launch. Longer stays, more spend, global brand lift for the city.</p>
-        </div>
-        <div class="pt">
-          <div class="pt-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 L13.5 8 L19 9 L13.5 10 L12 16 L10.5 10 L5 9 L10.5 8 Z"/><path d="M19 16 L20 19 L23 20 L20 21 L19 24 L18 21 L15 20 L18 19 Z" transform="translate(-1, -2)"/><path d="M5 17 L5.8 19 L8 20 L5.8 21 L5 23 L4.2 21 L2 20 L4.2 19 Z" transform="translate(0, -2)"/></svg></div>
-          <h4>Events &amp; nightlife</h4>
-          <p class="pt-d">Concert, festival and venue partner perks — Madrid after dark, one tap away.</p>
+        <div class="pt" style="height: 388px">
+          <span class="pt-no">03</span>
+          <div class="pt-icon-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19 C 5 16, 9 16, 9 13 C 9 10, 5 10, 5 7 C 5 4, 9 4, 11 4"/><path d="M11 4 L17 4 A 3 3 0 0 1 17 10 L14 10 A 3 3 0 0 0 14 16 L 19 16"/><circle cx="19" cy="19" r="2.5" fill="currentColor"/></svg></div>
+          <h4>Introduce biking routes</h4>
+          <p class="pt-d">Curated neighborhood tours to discover the city — La Latina, Malasaña, Retiro.</p>
         </div>
       </div>
-          <div class="partners-foot" data-comment-anchor="partners-foot">This is not a transport app. <span class="accent">It is Madrid city membership.</span></div>
     </div>
     <div class="footer"><span class="num">11 / 13</span></div>
   </section>
@@ -2034,7 +2140,7 @@
         <div class="ac primary" style="height: 500px">
           <div class="ac-icon-wrap" data-comment-anchor="9d8d9d0195-div"><svg class="ac-icon" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="12" y="12" width="32" height="32" rx="3"/><rect x="20" y="20" width="16" height="16" rx="1"/><line x1="8" y1="18" x2="12" y2="18"/><line x1="8" y1="28" x2="12" y2="28"/><line x1="8" y1="38" x2="12" y2="38"/><line x1="44" y1="18" x2="48" y2="18"/><line x1="44" y1="28" x2="48" y2="28"/><line x1="44" y1="38" x2="48" y2="38"/><line x1="18" y1="8" x2="18" y2="12"/><line x1="28" y1="8" x2="28" y2="12"/><line x1="38" y1="8" x2="38" y2="12"/><line x1="18" y1="44" x2="18" y2="48"/><line x1="28" y1="44" x2="28" y2="48"/><line x1="38" y1="44" x2="38" y2="48"/></svg></div>
           <h3>Technology budget,<br />across all three phases.</h3>
-          <p class="ac-lead">Fund the engineering that fixes onboarding (P1), builds the unified NFC pass (P2), and ships the partner platform (P3). One team, one roadmap, three releases.</p>
+          <p class="ac-lead" style="font-size: 28px">Fund the engineering that fixes onboarding (P1), builds the unified NFC pass (P2), and ships the partner platform (P3). One team, one roadmap, three releases.</p>
           <div class="ac-foot">
             <div class="k">What it covers</div>
             <div class="v">Onboarding rebuild · wallet integration · partner platform.</div>
@@ -2043,7 +2149,7 @@
         <div class="ac">
           <div class="ac-icon-wrap"><svg class="ac-icon" viewBox="0 0 56 56" xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M 8 22 L 8 34 L 18 34 L 36 44 L 36 12 L 18 22 Z"/><line x1="42" y1="20" x2="46" y2="16"/><line x1="42" y1="28" x2="48" y2="28"/><line x1="42" y1="36" x2="46" y2="40"/><path d="M 16 34 L 16 48 L 22 48 L 22 34"/></svg></div>
           <h3>Joint marketing to<br />launch the new brand.</h3>
-          <p class="ac-lead">Partner with us to launch MadUnlocked as Madrid's mobility and experience brand — alongside the Tourism Board, EMT and Metro. The product is ready; the city has to introduce it.</p>
+          <p class="ac-lead" style="font-size: 28px">Partner with us to launch MadOne as Madrid's mobility and experience brand, alongside the Tourism Board, EMT and Metro. The product is ready; the city has to introduce it.</p>
           <div class="ac-foot">
             <div class="k">What it covers</div>
             <div class="v">Co-branded launch · Tourism Board partnership · airport presence.</div>
@@ -2051,7 +2157,7 @@
         </div>
       </div>
     </div>
-    <div class="footer"><span class="num">12 / 13</span></div>
+    <div class="footer"><span class="num" data-comment-anchor="f6c7efd1d3-span">12 / 13</span></div>
   </section>
 
   <!-- ============ 14. CLOSING ============ -->
