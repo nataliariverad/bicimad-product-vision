@@ -2247,5 +2247,101 @@ English UX is broken.</div>
 
 </deck-stage>
 
+<style id="deck-entrance-anim">
+  @media screen {
+    @keyframes deckRise {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: none; }
+    }
+    @keyframes deckRiseSm {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* ----- Block-level entrance: direct children of each slide frame ----- */
+    deck-stage section > .frame > * { opacity: 0; }
+    deck-stage section[data-deck-active] > .frame > * {
+      animation: deckRise 660ms cubic-bezier(.22,.72,.2,1) both;
+    }
+    deck-stage section[data-deck-active] > .frame > *:nth-child(1) { animation-delay: 40ms; }
+    deck-stage section[data-deck-active] > .frame > *:nth-child(2) { animation-delay: 140ms; }
+    deck-stage section[data-deck-active] > .frame > *:nth-child(3) { animation-delay: 235ms; }
+    deck-stage section[data-deck-active] > .frame > *:nth-child(4) { animation-delay: 325ms; }
+    deck-stage section[data-deck-active] > .frame > *:nth-child(5) { animation-delay: 410ms; }
+    deck-stage section[data-deck-active] > .frame > *:nth-child(n+6) { animation-delay: 490ms; }
+
+    /* ----- Card cascade: neutralize container motion, stagger the cards ----- */
+    deck-stage section[data-deck-active] > .frame > .adv-cards,
+    deck-stage section[data-deck-active] > .frame > .prob-grid,
+    deck-stage section[data-deck-active] > .frame > .why-grid,
+    deck-stage section[data-deck-active] > .frame > .feat-grid,
+    deck-stage section[data-deck-active] > .frame > .partner-grid,
+    deck-stage section[data-deck-active] > .frame > .persona-grid,
+    deck-stage section[data-deck-active] > .frame > .ask-grid,
+    deck-stage section[data-deck-active] > .frame > .rm-timeline {
+      animation: none; opacity: 1; transform: none;
+    }
+    deck-stage section .adv-cards > .adv-card,
+    deck-stage section .prob-grid > .prob,
+    deck-stage section .why-grid > .why,
+    deck-stage section .feat-grid > .feat,
+    deck-stage section .partner-grid > .pt,
+    deck-stage section .persona-grid > .pcard,
+    deck-stage section .ask-grid > .ac,
+    deck-stage section .rm-stops > .rm-stop { opacity: 0; }
+
+    deck-stage section[data-deck-active] .adv-cards > .adv-card,
+    deck-stage section[data-deck-active] .prob-grid > .prob,
+    deck-stage section[data-deck-active] .why-grid > .why,
+    deck-stage section[data-deck-active] .feat-grid > .feat,
+    deck-stage section[data-deck-active] .partner-grid > .pt,
+    deck-stage section[data-deck-active] .persona-grid > .pcard,
+    deck-stage section[data-deck-active] .ask-grid > .ac,
+    deck-stage section[data-deck-active] .rm-stops > .rm-stop {
+      animation: deckRiseSm 580ms cubic-bezier(.22,.72,.2,1) both;
+    }
+    deck-stage section[data-deck-active] .adv-cards > .adv-card:nth-child(1),
+    deck-stage section[data-deck-active] .prob-grid > .prob:nth-child(1),
+    deck-stage section[data-deck-active] .why-grid > .why:nth-child(1),
+    deck-stage section[data-deck-active] .feat-grid > .feat:nth-child(1),
+    deck-stage section[data-deck-active] .partner-grid > .pt:nth-child(1),
+    deck-stage section[data-deck-active] .persona-grid > .pcard:nth-child(1),
+    deck-stage section[data-deck-active] .ask-grid > .ac:nth-child(1),
+    deck-stage section[data-deck-active] .rm-stops > .rm-stop:nth-child(1) { animation-delay: 230ms; }
+    deck-stage section[data-deck-active] .adv-cards > .adv-card:nth-child(2),
+    deck-stage section[data-deck-active] .prob-grid > .prob:nth-child(2),
+    deck-stage section[data-deck-active] .why-grid > .why:nth-child(2),
+    deck-stage section[data-deck-active] .feat-grid > .feat:nth-child(2),
+    deck-stage section[data-deck-active] .partner-grid > .pt:nth-child(2),
+    deck-stage section[data-deck-active] .persona-grid > .pcard:nth-child(2),
+    deck-stage section[data-deck-active] .ask-grid > .ac:nth-child(2),
+    deck-stage section[data-deck-active] .rm-stops > .rm-stop:nth-child(2) { animation-delay: 330ms; }
+    deck-stage section[data-deck-active] .adv-cards > .adv-card:nth-child(3),
+    deck-stage section[data-deck-active] .prob-grid > .prob:nth-child(3),
+    deck-stage section[data-deck-active] .why-grid > .why:nth-child(3),
+    deck-stage section[data-deck-active] .feat-grid > .feat:nth-child(3),
+    deck-stage section[data-deck-active] .partner-grid > .pt:nth-child(3),
+    deck-stage section[data-deck-active] .rm-stops > .rm-stop:nth-child(3) { animation-delay: 430ms; }
+    deck-stage section[data-deck-active] .adv-cards > .adv-card:nth-child(4),
+    deck-stage section[data-deck-active] .feat-grid > .feat:nth-child(4),
+    deck-stage section[data-deck-active] .why-grid > .why:nth-child(4) { animation-delay: 530ms; }
+  }
+
+  /* Accessibility + print: never hide content, never animate */
+  @media screen and (prefers-reduced-motion: reduce) {
+    deck-stage section > .frame > *,
+    deck-stage section .adv-cards > .adv-card,
+    deck-stage section .prob-grid > .prob,
+    deck-stage section .why-grid > .why,
+    deck-stage section .feat-grid > .feat,
+    deck-stage section .partner-grid > .pt,
+    deck-stage section .persona-grid > .pcard,
+    deck-stage section .ask-grid > .ac,
+    deck-stage section .rm-stops > .rm-stop {
+      opacity: 1 !important; transform: none !important; animation: none !important;
+    }
+  }
+</style>
+
 </body>
 </html>
